@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "459763167834",
+    "project_id": "readapp-3b510",
+    "storage_bucket": "readapp-3b510.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459763167834:android:150e2bad13944bae605e63",
+        "android_client_info": {
+          "package_name": "com.example.readapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4KkraGH1ULo66QgsV7n4sI5fNoD_HC_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
