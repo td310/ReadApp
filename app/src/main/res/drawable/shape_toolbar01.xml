@@ -4,6 +4,9 @@
 
     <corners android:bottomLeftRadius="40dp"
         android:bottomRightRadius="40dp"/>
-    <solid android:color="@color/purple_500"/>
+    <gradient
+        android:startColor="#3DC2EC"
+        android:endColor="#4B70F5"
+        android:angle="@integer/material_motion_duration_long_1"/>
 
 </shape>

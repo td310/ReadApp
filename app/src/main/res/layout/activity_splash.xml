@@ -9,19 +9,33 @@
     android:background="@drawable/back01"
     tools:context=".ui.splash_screen.SplashActivity">
 
-    <ImageView
-        android:layout_width="230dp"
-        android:layout_height="230dp"
-        android:src="@drawable/logo"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Book App"
-        android:textColor="@color/black"
-        android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/main_logo"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_main"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_below="@+id/main_logo"
+            android:layout_centerHorizontal="true"
+            android:text="Welcome To Reading App"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

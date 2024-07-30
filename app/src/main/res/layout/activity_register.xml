@@ -32,7 +32,7 @@
             android:layout_height="130dp"
             android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/logo" />
+            app:srcCompat="@drawable/logo_main" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -66,7 +66,8 @@
                     <ProgressBar
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:indeterminateTint="@color/blue"/>
                 </RelativeLayout>
 
                 <TextView
@@ -244,13 +245,14 @@
                             android:inputType="textMultiLine|textCapSentences"
                             android:padding="15dp" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/submitBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:layout_marginEnd="10dp"
                             android:text="Comment"
+                            android:background="@drawable/shape_button01"
                             android:textColor="@color/white" />
 
                     </LinearLayout>
@@ -273,37 +275,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/design_default_color_primary"
+        android:background="@drawable/shape_toolbar03"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/readBookBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="10sp"
-            android:background="@drawable/shape_button02"
+            android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_book_white"
             android:text="Read"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/downloadBookBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="10sp"
-            android:background="@drawable/shape_button02"
+            android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_download_white"
             android:text="Download"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/favbookBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/shape_button02"
+            android:background="@android:color/transparent"
             android:drawableTop="@drawable/ic_favorite_border_white"
             android:text="Add Favorite"
             android:textSize="10sp"

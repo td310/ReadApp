@@ -10,6 +10,7 @@
     app:contentPadding="8dp">
 
     <RelativeLayout
+        android:id="@+id/commentRl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.imageview.ShapeableImageView
@@ -39,6 +40,7 @@
             android:text="dd/MM/yy"
             android:textSize="12sp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/gray03"
             android:layout_alignParentEnd="true"/>
 
         <ImageButton
@@ -50,7 +52,7 @@
             android:padding="12dp"
             android:layout_below="@+id/dateTv"
             android:layout_alignParentEnd="true"
-            app:tint="@color/gray02" />
+            app:tint="@color/gray03" />
 
         <TextView
             android:id="@+id/commentTv"
@@ -63,9 +65,17 @@
             android:textSize="12sp"
             android:justificationMode="inter_word"
             android:hyphenationFrequency="full"
-            android:textColor="@color/gray02"
+            android:textColor="@color/gray03"
             android:layout_marginTop="5dp"
             android:text="Comment ..."/>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/deleteBtn"
+            android:background="@color/gray02"
+            android:layout_marginTop="5dp"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

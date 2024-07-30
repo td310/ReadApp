@@ -27,7 +27,8 @@
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:indeterminateTint="@color/blue"/>
 
         </RelativeLayout>
 
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book Title"
+            android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/pdfRL"/>
 
         <TextView
@@ -45,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book Description"
+            android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/pdfRL"
             android:maxLines="4"
             android:layout_below="@+id/titleTv"
@@ -67,6 +70,7 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/pdfRL"
             android:maxLines="1"
+            android:layout_marginStart="5dp"
             android:text="13MB"/>
 
         <TextView
