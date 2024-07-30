@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.readapp.data.model.ModelCategory
-import com.example.readapp.data.repository.pdf_user.BookRepository
+import com.example.readapp.data.repository.pdf_user.PdfUserRepository
 
-class DashboardUserViewModel(private val repository: BookRepository) : ViewModel() {
+class DashboardUserViewModel(private val repository: PdfUserRepository) : ViewModel() {
 
     private val _categories = MutableLiveData<List<ModelCategory>>()
     val categories: LiveData<List<ModelCategory>> get() = _categories

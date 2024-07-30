@@ -8,7 +8,7 @@ import com.example.readapp.ui.register.RegisterViewModel
 import com.example.readapp.data.repository.login_register.UserRepository
 import com.example.readapp.data.repository.pdf_admin_list_detail.PdfListAdminRepository
 import com.example.readapp.data.repository.pdf_admin_pdf_view.PdfViewRepository
-import com.example.readapp.data.repository.pdf_user.BookRepository
+import com.example.readapp.data.repository.pdf_user.PdfUserRepository
 import com.example.readapp.data.repository.profile.ProfileRepository
 import com.example.readapp.data.repository.profile_edit.ProfileEditRepository
 import com.example.readapp.ui.category.AddCategoryViewModel
@@ -19,7 +19,7 @@ import com.example.readapp.ui.pdf_admin.PdfListAdminViewModel
 import com.example.readapp.ui.pdf_admin_edit.PdfEditViewModel
 import com.example.readapp.ui.pdf_admin_list_detail.PdfListDetailViewModel
 import com.example.readapp.ui.pdf_admin_pdf_view.PdfViewDetailViewModel
-import com.example.readapp.ui.pdf_user.BookUserViewModel
+import com.example.readapp.ui.pdf_user.PdfUserViewModel
 import com.example.readapp.ui.profile.ProfileViewModel
 import com.example.readapp.ui.profile_edit.ProfileEditViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -41,14 +41,14 @@ val appModule = module {
     single { PdfEditRepository(get()) }
     single { PdfListAdminRepository(get(),get()) }
     single { PdfViewRepository(get(), get()) }
-    single { BookRepository(get()) }
+    single { PdfUserRepository(get()) }
     single { ProfileRepository(get(), get()) }
     single { ProfileEditRepository(get(), get(), get()) }
 
     viewModel { ProfileEditViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { DashboardUserViewModel(get()) }
-    viewModel { BookUserViewModel(get()) }
+    viewModel { PdfUserViewModel(get()) }
     viewModel { PdfViewDetailViewModel(get()) }
     viewModel { PdfListDetailViewModel(get()) }
     viewModel { PdfEditViewModel(get()) }

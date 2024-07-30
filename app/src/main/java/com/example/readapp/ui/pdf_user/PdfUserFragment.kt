@@ -11,17 +11,17 @@ import com.example.readapp.adapter.AdapterPdfUser
 import com.example.readapp.databinding.FragmentBookUserBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class BookUserFragment : Fragment() {
+class PdfUserFragment : Fragment() {
     private lateinit var binding: FragmentBookUserBinding
-    private val viewModel: BookUserViewModel by viewModel()
+    private val viewModel: PdfUserViewModel by viewModel()
 
     private var categoryId = ""
     private var category = ""
     private var uid = ""
 
     companion object {
-        fun newInstance(categoryId: String, category: String, uid: String): BookUserFragment {
-            val fragment = BookUserFragment()
+        fun newInstance(categoryId: String, category: String, uid: String): PdfUserFragment {
+            val fragment = PdfUserFragment()
             val args = Bundle()
             args.putString("categoryId", categoryId)
             args.putString("category", category)

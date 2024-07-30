@@ -11,8 +11,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityDashboardUserBinding
-import com.example.readapp.ui.main.MainActivity
-import com.example.readapp.ui.pdf_user.BookUserFragment
+import com.example.readapp.ui.login.LoginActivity
+import com.example.readapp.ui.pdf_user.PdfUserFragment
 import com.example.readapp.ui.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,7 +41,7 @@ class DashboardUserActivity : AppCompatActivity() {
 
         binding.logoutBtn.setOnClickListener {
             firebaseAuth.signOut()
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
 
@@ -55,7 +55,7 @@ class DashboardUserActivity : AppCompatActivity() {
 
         categories.forEach { category ->
             viewPagerAdapter.addFragment(
-                BookUserFragment.newInstance(category.id, category.category, category.uid),
+                PdfUserFragment.newInstance(category.id, category.category, category.uid),
                 category.category
             )
         }
@@ -64,7 +64,7 @@ class DashboardUserActivity : AppCompatActivity() {
     }
 
     class ViewPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
-        private val fragmentsList: ArrayList<BookUserFragment> = ArrayList()
+        private val fragmentsList: ArrayList<PdfUserFragment> = ArrayList()
         private val fragmentTitleList: ArrayList<String> = ArrayList()
 
         override fun getCount(): Int {
@@ -79,7 +79,7 @@ class DashboardUserActivity : AppCompatActivity() {
             return fragmentTitleList[position]
         }
 
-        fun addFragment(fragment: BookUserFragment, title: String) {
+        fun addFragment(fragment: PdfUserFragment, title: String) {
             fragmentsList.add(fragment)
             fragmentTitleList.add(title)
         }
@@ -91,14 +91,11 @@ class DashboardUserActivity : AppCompatActivity() {
             //not login, user can stay in user dashboard without login
             binding.subTitleTv.text = "Not Logged In"
             binding.profileBtn.visibility = View.GONE
-            binding.logoutBtn.visibility = View.GONE
         } else {
             // loggin, get & show user info
             val email = firebaseUser.email
             binding.subTitleTv.text = email
-
             binding.profileBtn.visibility = View.VISIBLE
-            binding.logoutBtn.visibility = View.VISIBLE
         }
     }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/back01"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.category.AddCategoryActivity">
@@ -57,6 +58,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         app:hintEnabled="false"
+        app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarRL">
@@ -68,11 +70,11 @@
             android:background="@drawable/shape_edittext01"
             android:drawableStart="@drawable/ic_category_gray"
             android:drawablePadding="10dp"
-            android:hint="Category Tittle"
+            android:hint="Category"
             android:inputType="textEmailAddress"
             android:padding="15dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray01" />
+            android:textColorHint="@color/gray03" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

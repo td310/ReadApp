@@ -71,7 +71,8 @@
                 android:id="@+id/titleTil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hintEnabled="false">
+                app:hintEnabled="false"
+                app:boxBackgroundMode="none">
 
                 <EditText
                     android:id="@+id/titleEt"
@@ -84,7 +85,7 @@
                     android:inputType="textPersonName|textCapWords"
                     android:padding="15dp"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
+                    android:textColorHint="@color/gray03" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/titleTil"
-                app:hintEnabled="false">
+                app:hintEnabled="false"
+                app:boxBackgroundMode="none">
 
                 <EditText
                     android:id="@+id/descriptionEt"
@@ -107,7 +109,7 @@
                     android:inputType="textMultiLine|textCapSentences"
                     android:padding="15dp"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/gray01" />
+                    android:textColorHint="@color/gray03" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,7 +125,7 @@
                 android:padding="15dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_edittext01"
-                android:textColorHint="@color/gray01"
+                android:textColorHint="@color/gray03"
                 android:textSize="16dp"/>
 
             <Button

@@ -7,7 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class BookRepository(private val database: FirebaseDatabase) {
+class PdfUserRepository(private val database: FirebaseDatabase) {
 
     fun fetchCategories(callback: (List<ModelCategory>) -> Unit) {
         val ref = FirebaseDatabase.getInstance().getReference("Categories")

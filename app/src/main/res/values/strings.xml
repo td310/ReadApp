@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookApp</string>
+    <string name="app_name">ReadApp</string>
     <string name="sign_up">Not Have Account? <b>Sign Up</b></string>
     <string name="login">Already Have Account? <b>Login</b></string>
     <string name="back_button_description">Back</string>

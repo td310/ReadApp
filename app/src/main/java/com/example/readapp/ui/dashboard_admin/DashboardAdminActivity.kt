@@ -10,7 +10,7 @@ import com.example.readapp.adapter.AdapterCategory
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityDashboardAdminBinding
 import com.example.readapp.ui.category.AddCategoryActivity
-import com.example.readapp.ui.main.MainActivity
+import com.example.readapp.ui.login.LoginActivity
 import com.example.readapp.ui.pdf.PdfAddActivity
 import com.example.readapp.ui.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -93,9 +93,9 @@ class DashboardAdminActivity : AppCompatActivity() {
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
-        if(firebaseUser ==null){
-            //not login, go to main
-            startActivity(Intent(this,MainActivity::class.java))
+        if(firebaseUser == null){
+            //not login, go back loggin
+            startActivity(Intent(this,LoginActivity::class.java))
             finish()
             binding.profileBtn.visibility = View.GONE
             binding.logoutBtn.visibility = View.GONE
