@@ -17,10 +17,12 @@
             android:layout_height="140dp"
             android:layout_marginEnd="5dp"
             android:background="@color/gray02">
-            <com.github.barteksc.pdfviewer.PDFView
-                android:id="@+id/pdfView"
+            <ImageView
+                android:id="@+id/pdfThumbnailIv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/gray02"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"

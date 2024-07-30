@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.readapp.adapter.AdapterPdfAdmin
 import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
-import com.example.readapp.databinding.ActivityPdfListAdminBinding
+import com.example.readapp.databinding.ActivityPdfAdminBinding
 
 class PdfAdminActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPdfListAdminBinding
+    private lateinit var binding: ActivityPdfAdminBinding
 
     private lateinit var viewModel: PdfAdminViewModel
 
@@ -29,7 +29,7 @@ class PdfAdminActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPdfListAdminBinding.inflate(layoutInflater)
+        binding = ActivityPdfAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val intent = intent

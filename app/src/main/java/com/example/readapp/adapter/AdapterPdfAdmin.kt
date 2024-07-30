@@ -36,7 +36,7 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
     }
 
     inner class HolderPdfAdmin(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val pdfView = binding.pdfView
+        val pdfThumbnailIv = binding.pdfThumbnailIv
         val progressBar = binding.progressBar
         val titleTv = binding.titleTv
         val descriptionTv = binding.descriptionTv
@@ -68,8 +68,9 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
         holder.dateTv.text = formattedDate
         //fun...
         MainUtils.loadCategory(categoryId, holder.categoryTv)
-        MainUtils.loadPdfFromUrlSinglePage(pdfUrl,title, holder.pdfView, holder.progressBar, null)
-        MainUtils.loadPdfSize(pdfUrl, title,holder.sizeTv)
+//        MainUtils.loadPdfFromUrlSinglePage(pdfUrl, title, holder.pdfView, holder.progressBar, null)
+        MainUtils.loadPdfSize(pdfUrl, title, holder.sizeTv)
+        MainUtils.loadPdfThumbnail(pdfUrl, holder.pdfThumbnailIv, holder.progressBar)
 
         holder.moreBtn.setOnClickListener {
             moreOptionsDialog(model, holder)

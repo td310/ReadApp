@@ -67,7 +67,7 @@
                         android:id="@+id/progressBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:indeterminateTint="@color/blue"/>
+                        android:indeterminateTint="@color/blue" />
                 </RelativeLayout>
 
                 <TextView
@@ -76,6 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/pdfRl"
+                    android:layout_marginStart="5dp"
                     android:text="Book Title" />
 
                 <TableLayout
@@ -92,6 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Category" />
 
                         <TextView
@@ -112,6 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Date" />
 
                         <TextView
@@ -132,6 +135,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Size" />
 
                         <TextView
@@ -152,6 +156,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Views" />
 
                         <TextView
@@ -172,6 +177,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Downloads" />
 
                         <TextView
@@ -192,6 +198,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
+                            android:layout_marginStart="5dp"
                             android:text="Pages" />
 
                         <TextView

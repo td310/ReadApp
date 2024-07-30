@@ -57,7 +57,7 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUSer>, Filte
         holder.descriptionTv.text = description
         holder.dateTv.text = date
 
-        MainUtils.loadPdfFromUrlSinglePage(url, title, holder.pdfView, holder.progressBar, null)
+        MainUtils.loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar)
         MainUtils.loadCategory(categoryId, holder.categoryTv)
         MainUtils.loadPdfSize(url, title, holder.sizeTv)
 
@@ -76,7 +76,7 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUSer>, Filte
     }
 
     inner class HolderPdfUSer(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var pdfView = binding.pdfView
+        val pdfThumbnailIv = binding.pdfThumbnailIv
         var progressBar = binding.progressBar
         var titleTv = binding.titleTv
         var descriptionTv = binding.descriptionTv

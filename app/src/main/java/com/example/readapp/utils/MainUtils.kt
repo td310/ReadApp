@@ -1,10 +1,15 @@
 package com.example.readapp.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.pdf.PdfRenderer
+import android.os.ParcelFileDescriptor
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,8 +25,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.github.barteksc.pdfviewer.PDFView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.Calendar
 import java.util.HashMap
 import java.util.Locale
@@ -157,6 +163,7 @@ object MainUtils {
     }
 
     //show only 1 page -> optimize resources
+
     fun loadPdfFromUrlSinglePage(
         pdfUrl: String,
         pdfTitle: String,
@@ -164,31 +171,58 @@ object MainUtils {
         progressBar: View,
         pagesTv: TextView?
     ) {
-        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
+        // Generate a unique file name for the cached PDF
+        val cacheFile = File(pdfView.context.cacheDir, "$pdfTitle.pdf")
 
+        // Check if the file is already cached
+        if (cacheFile.exists()) {
+            loadPdfFromFile(cacheFile, pdfView, progressBar, pagesTv)
+            return
+        }
+
+        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
         ref.getBytes(MAX_BYTES_PDF)
             .addOnSuccessListener { bytes ->
-                pdfView.fromBytes(bytes)
-                    .spacing(0)
-                    .swipeHorizontal(false)
-                    .enableSwipe(false)
-                    .onError { t ->
-                        progressBar.visibility = View.INVISIBLE
-                        Log.d(TAG, "loadPdfFromUrlSinglePage: ${t.message}")
-                    }
-                    .onPageError { page, t ->
-                        progressBar.visibility = View.VISIBLE
-                        Log.d(TAG, "loadPdfFromUrlSinglePage: ${t.message}")
-                    }
-                    .onLoad { nbPages ->
-                        progressBar.visibility = View.INVISIBLE
-                        pagesTv?.text = "$nbPages"
-                    }
-                    .load()
+                // Save the file to cache
+                try {
+                    val fos = FileOutputStream(cacheFile)
+                    fos.write(bytes)
+                    fos.close()
+                    loadPdfFromFile(cacheFile, pdfView, progressBar, pagesTv)
+                } catch (e: IOException) {
+                    progressBar.visibility = View.INVISIBLE
+                    Log.d(TAG, "loadPdfFromUrlSinglePage: Failed to save file to cache due to ${e.message}")
+                }
             }
             .addOnFailureListener { e ->
+                progressBar.visibility = View.INVISIBLE
                 Log.d(TAG, "loadPdfFromUrlSinglePage: Failed to get bytes due to ${e.message}")
             }
+    }
+
+    fun loadPdfFromFile(
+        file: File,
+        pdfView: PDFView,
+        progressBar: View,
+        pagesTv: TextView?
+    ) {
+        pdfView.fromFile(file)
+            .spacing(0)
+            .swipeHorizontal(false)
+            .enableSwipe(false)
+            .onError { t ->
+                progressBar.visibility = View.INVISIBLE
+                Log.d(TAG, "loadPdfFromFile: ${t.message}")
+            }
+            .onPageError { page, t ->
+                progressBar.visibility = View.VISIBLE
+                Log.d(TAG, "loadPdfFromFile: ${t.message}")
+            }
+            .onLoad { nbPages ->
+                progressBar.visibility = View.INVISIBLE
+                pagesTv?.text = "$nbPages"
+            }
+            .load()
     }
 
     //show pdf belong to categoryId
@@ -266,7 +300,7 @@ object MainUtils {
                     holder.descriptionTv.text = description
                     holder.dateTv.text = date
 
-                    loadPdfFromUrlSinglePage(url, title, holder.pdfView, holder.progressBar, null)
+                    loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar)
                     loadCategory(categoryId, holder.categoryTv)
                     loadPdfSize(url, title, holder.sizeTv)
                 }
@@ -337,5 +371,50 @@ object MainUtils {
             }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .show()
+    }
+
+
+    fun loadPdfThumbnail(pdfUrl: String, imageView: ImageView, progressBar: View) {
+        val cacheFile = File(imageView.context.cacheDir, "${pdfUrl.hashCode()}.pdf")
+
+        if (cacheFile.exists()) {
+            loadThumbnailFromCache(cacheFile, imageView, progressBar)
+            return
+        }
+
+        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
+        ref.getBytes(MAX_BYTES_PDF)
+            .addOnSuccessListener { bytes ->
+                try {
+                    val fos = FileOutputStream(cacheFile)
+                    fos.write(bytes)
+                    fos.close()
+                    loadThumbnailFromCache(cacheFile, imageView, progressBar)
+                } catch (e: IOException) {
+                    progressBar.visibility = View.INVISIBLE
+                    Log.d(TAG, "loadPdfThumbnail: Failed to save file to cache due to ${e.message}")
+                }
+            }
+            .addOnFailureListener { e ->
+                progressBar.visibility = View.INVISIBLE
+                Log.d(TAG, "loadPdfThumbnail: Failed to get bytes due to ${e.message}")
+            }
+    }
+
+    private fun loadThumbnailFromCache(file: File, imageView: ImageView, progressBar: View) {
+        try {
+            val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
+            val page = pdfRenderer.openPage(0)
+            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+            page.close()
+            pdfRenderer.close()
+
+            imageView.setImageBitmap(bitmap)
+            progressBar.visibility = View.INVISIBLE
+        } catch (e: IOException) {
+            progressBar.visibility = View.INVISIBLE
+            Log.d(TAG, "loadThumbnailFromCache: Failed to load thumbnail from cache due to ${e.message}")
+        }
     }
 }

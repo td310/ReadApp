@@ -47,15 +47,13 @@ class AdapterProfile(
         return booksArrayList.size
     }
 
-
-
     fun updateBooks(newBooks: ArrayList<ModelPdf>) {
         booksArrayList = newBooks
         notifyDataSetChanged()
     }
 
     inner class HolderPdfFavorite(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var pdfView = binding.pdfView
+        val pdfThumbnailIv = binding.pdfThumbnailIv
         var progressBar = binding.progressBar
         var titleTv = binding.titleTv
         var removeFavBtn = binding.removeFavBtn
