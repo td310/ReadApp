@@ -2,6 +2,7 @@ package com.example.readapp.ui.category
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -9,6 +10,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.readapp.R
 import com.example.readapp.databinding.ActivityAddCategoryBinding
+import com.example.readapp.ui.dashboard_admin.DashboardAdminActivity
+import com.example.readapp.ui.dashboard_user.DashboardUserActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddCategoryActivity : AppCompatActivity() {
@@ -53,6 +56,8 @@ class AddCategoryActivity : AppCompatActivity() {
             progressDialog.dismiss()
             if (isSuccess) {
                 Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, DashboardAdminActivity::class.java))
+                finish()
             }
         })
 

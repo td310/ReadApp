@@ -1,4 +1,4 @@
-package com.example.readapp.data.repository.pdf_admin_list_detail
+package com.example.readapp.data.repository.pdf_list_detail
 
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.data.model.ModelPdf
@@ -9,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
-class PdfListAdminRepository(
+class PdfListDetailRepository(
     private val database: FirebaseDatabase,
     private val firebaseAuth: FirebaseAuth,
 ) {

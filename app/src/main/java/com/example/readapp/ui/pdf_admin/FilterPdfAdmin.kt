@@ -1,15 +1,15 @@
 package com.example.readapp.ui.pdf_admin
 
-import com.example.readapp.adapter.AdapterPdfListAdmin
+import com.example.readapp.adapter.AdapterPdfAdmin
 import com.example.readapp.data.model.ModelPdf
 import android.widget.Filter
 
 class FilterPdfAdmin : Filter {
     var filterList: ArrayList<ModelPdf>
 
-    var adapterPdfAdmin:AdapterPdfListAdmin
+    var adapterPdfAdmin:AdapterPdfAdmin
 
-    constructor(filterList: ArrayList<ModelPdf>,adapterPdfAdmin: AdapterPdfListAdmin){
+    constructor(filterList: ArrayList<ModelPdf>,adapterPdfAdmin: AdapterPdfAdmin){
         this.filterList = filterList
         this.adapterPdfAdmin = adapterPdfAdmin
     }

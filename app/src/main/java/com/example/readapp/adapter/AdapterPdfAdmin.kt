@@ -13,11 +13,11 @@ import com.example.readapp.ui.pdf_admin.FilterPdfAdmin
 import android.widget.Filter
 import android.widget.Filterable
 import com.example.readapp.ui.pdf_admin_edit.PdfEditActivity
-import com.example.readapp.ui.pdf_admin_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
 import com.example.readapp.utils.MainUtils
 import java.util.*
 
-class AdapterPdfListAdmin : RecyclerView.Adapter<AdapterPdfListAdmin.HolderPdfAdmin>,Filterable {
+class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
     private var context: Context
 
     //arraylist to hold  pdf
@@ -81,7 +81,6 @@ class AdapterPdfListAdmin : RecyclerView.Adapter<AdapterPdfListAdmin.HolderPdfAd
             context.startActivity(intent)
         }
     }
-
     private fun moreOptionsDialog(model: ModelPdf, holder: HolderPdfAdmin) {
         val bookId = model.id
         val bookUrl = model.url
@@ -114,14 +113,11 @@ class AdapterPdfListAdmin : RecyclerView.Adapter<AdapterPdfListAdmin.HolderPdfAd
         }
         return filter as FilterPdfAdmin
     }
-
     //update pdf list after searching
     fun updateList(newPdfList: ArrayList<ModelPdf>) {
         pdfArrayList.clear()
         pdfArrayList.addAll(newPdfList)
         notifyDataSetChanged()
     }
-
-
 }
 

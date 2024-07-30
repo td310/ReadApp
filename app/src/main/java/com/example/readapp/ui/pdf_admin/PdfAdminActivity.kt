@@ -8,14 +8,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.readapp.adapter.AdapterPdfListAdmin
-import com.example.readapp.data.repository.pdf_admin.PdfListRepository
+import com.example.readapp.adapter.AdapterPdfAdmin
+import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 import com.example.readapp.databinding.ActivityPdfListAdminBinding
 
-class PdfListAdminActivity : AppCompatActivity() {
+class PdfAdminActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityPdfListAdminBinding
-    private lateinit var viewModel: PdfListAdminViewModel
-    private lateinit var adapterPdfAdmin: AdapterPdfListAdmin
+
+    private lateinit var viewModel: PdfAdminViewModel
+
+    private lateinit var adapterPdfAdmin: AdapterPdfAdmin
 
     private companion object {
         const val TAG = "PDF_LIST_ADMIN_TAG"
@@ -35,11 +38,11 @@ class PdfListAdminActivity : AppCompatActivity() {
 
         binding.subTitleTv.text = category
 
-        val repository = PdfListRepository()
-        val factory = PdfListAdminViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory).get(PdfListAdminViewModel::class.java)
+        val repository = PdfAdminRepository()
+        val factory = PdfAdminViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory).get(PdfAdminViewModel::class.java)
 
-        adapterPdfAdmin = AdapterPdfListAdmin(this, ArrayList())
+        adapterPdfAdmin = AdapterPdfAdmin(this, ArrayList())
         binding.booksRv.adapter = adapterPdfAdmin
 
         viewModel.loadPdfList(categoryId)

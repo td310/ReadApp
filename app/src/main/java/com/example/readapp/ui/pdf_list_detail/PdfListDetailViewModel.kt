@@ -1,4 +1,4 @@
-package com.example.readapp.ui.pdf_admin_list_detail
+package com.example.readapp.ui.pdf_list_detail
 
 import android.os.Environment
 import androidx.lifecycle.LiveData
@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.data.model.ModelPdf
-import com.example.readapp.data.repository.pdf_admin_list_detail.PdfListAdminRepository
+import com.example.readapp.data.repository.pdf_list_detail.PdfListDetailRepository
 import java.io.FileOutputStream
 
-class PdfListDetailViewModel(private val repository: PdfListAdminRepository) : ViewModel() {
+class PdfListDetailViewModel(private val repository: PdfListDetailRepository) : ViewModel() {
 
     private val _bookDetails = MutableLiveData<ModelPdf>()
     val bookDetails: LiveData<ModelPdf> get() = _bookDetails

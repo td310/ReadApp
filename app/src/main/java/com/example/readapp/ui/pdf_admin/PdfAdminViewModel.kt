@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.readapp.data.model.ModelPdf
-import com.example.readapp.data.repository.pdf_admin.PdfListRepository
+import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 
-class PdfListAdminViewModel(private val pdfRepository: PdfListRepository) : ViewModel() {
+class PdfAdminViewModel(private val pdfRepository: PdfAdminRepository) : ViewModel() {
     private val _pdfList = MutableLiveData<ArrayList<ModelPdf>>()
     val pdfList: LiveData<ArrayList<ModelPdf>> get() = _pdfList
 

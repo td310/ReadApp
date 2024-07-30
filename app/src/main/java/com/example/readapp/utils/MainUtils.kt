@@ -64,9 +64,12 @@ object MainUtils {
                 ref.child(bookId)
                     .removeValue()
                     .addOnSuccessListener {
-                        progressDialog.dismiss()
-                        Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show()
                         Log.d(TAG, "deleteBook: Deleted from database")
+                        // Remove from favorites of all users
+                        removeFromFavorite(context, bookId) {
+                            progressDialog.dismiss()
+                            Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     .addOnFailureListener { e ->
                         Log.d(TAG, "deleteBook: Failed to delete from database due to ${e.message}")
@@ -84,6 +87,52 @@ object MainUtils {
                 Toast.makeText(context, "Failed to delete due to ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    // Remove from favorite for all users
+    fun removeFromFavorite(context: Context, bookId: String, onSuccess: () -> Unit = {}) {
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapshot in snapshot.children) {
+                    userSnapshot.ref.child("Favorites").child(bookId)
+                        .removeValue()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "removeFromAllFavorites: Removed from favorite of user ${userSnapshot.key}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorite of user ${userSnapshot.key} due to ${e.message}")
+                        }
+                }
+                onSuccess()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorites due to ${error.message}")
+            }
+        })
+    }
+
+    //delete books in category
+    fun deleteBooksInCategory(context: Context, categoryId: String, onSuccess: () -> Unit) {
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        ref.orderByChild("categoryId").equalTo(categoryId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (bookSnapshot in snapshot.children) {
+                        val bookId = bookSnapshot.key ?: continue
+                        val bookUrl = bookSnapshot.child("url").getValue(String::class.java) ?: continue
+                        val bookTitle = bookSnapshot.child("title").getValue(String::class.java) ?: continue
+                        deleteBook(context, bookId, bookUrl, bookTitle)
+                    }
+                    onSuccess()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "deleteBooksInCategory: Failed to delete books in category due to ${error.message}")
+                }
+            })
+    }
+
 
     //load size pdf
     fun loadPdfSize(pdfUrl: String,pdfTitle: String, sizeTv: TextView) {
@@ -226,28 +275,29 @@ object MainUtils {
             })
     }
 
-
-    fun removeFromFavorite(context: Context,bookId: String) {
-        val TAG = "REMOVE_FAV_TAG"
-        Log.d(TAG, "removeFromFavorite: Removing from favorite")
-
-        val firebaseAuth = FirebaseAuth.getInstance()
-
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
-            .removeValue()
-            .addOnSuccessListener {
-                Log.d(TAG, "removeFromFavorite: Removed form favorite")
-            }
-            .addOnFailureListener { e ->
-                Log.d(TAG, "removeFromFavorite: Failed to remove to favorite due to ${e.message}")
-                Toast.makeText(
-                    context,
-                    "Failed to remove to favorite due to ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-    }
+//remove favorite
+//fun removeFromFavorite(context: Context, bookId: String, onSuccess: () -> Unit = {}) {
+//    val ref = FirebaseDatabase.getInstance().getReference("Users")
+//    ref.addListenerForSingleValueEvent(object : ValueEventListener {
+//        override fun onDataChange(snapshot: DataSnapshot) {
+//            for (userSnapshot in snapshot.children) {
+//                userSnapshot.ref.child("Favorites").child(bookId)
+//                    .removeValue()
+//                    .addOnSuccessListener {
+//                        Log.d(TAG, "removeFromAllFavorites: Removed from favorite of user ${userSnapshot.key}")
+//                    }
+//                    .addOnFailureListener { e ->
+//                        Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorite of user ${userSnapshot.key} due to ${e.message}")
+//                    }
+//            }
+//            onSuccess()
+//        }
+//
+//        override fun onCancelled(error: DatabaseError) {
+//            Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorites due to ${error.message}")
+//        }
+//    })
+//}
 
 //AdapterComment
     fun loadUserDetails(model: ModelComment, binding: RowCommentBinding) {

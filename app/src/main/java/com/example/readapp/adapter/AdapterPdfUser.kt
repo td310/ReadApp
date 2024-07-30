@@ -10,7 +10,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowPdfUserBinding
-import com.example.readapp.ui.pdf_admin_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
 import com.example.readapp.ui.pdf_user.FilterPdfUser
 import com.example.readapp.utils.MainUtils
 

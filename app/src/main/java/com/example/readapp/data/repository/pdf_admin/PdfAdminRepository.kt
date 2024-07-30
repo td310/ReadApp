@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class PdfListRepository() {
+class PdfAdminRepository() {
     private val database = FirebaseDatabase.getInstance().getReference("Books")
 
     fun getPdfsByCategory(categoryId: String, callback: (ArrayList<ModelPdf>) -> Unit) {

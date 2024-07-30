@@ -37,13 +37,13 @@
             android:name=".ui.pdf_admin_pdf_view.PdfViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.pdf_admin_list_detail.PdfListDetailActivity"
+            android:name=".ui.pdf_list_detail.PdfListDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.pdf_admin_edit.PdfEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.pdf_admin.PdfListAdminActivity"
+            android:name=".ui.pdf_admin.PdfAdminActivity"
             android:exported="false" />
         <activity
             android:name=".ui.pdf.PdfAddActivity"

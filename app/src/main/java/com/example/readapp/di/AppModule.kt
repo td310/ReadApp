@@ -2,11 +2,11 @@ package com.example.readapp.di
 
 import com.example.readapp.data.repository.category.CategoryRepository
 import com.example.readapp.data.repository.pdf_admin_edit.PdfEditRepository
-import com.example.readapp.data.repository.pdf_admin.PdfListRepository
+import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 import com.example.readapp.data.repository.pdf.PdfRepository
 import com.example.readapp.ui.register.RegisterViewModel
 import com.example.readapp.data.repository.login_register.UserRepository
-import com.example.readapp.data.repository.pdf_admin_list_detail.PdfListAdminRepository
+import com.example.readapp.data.repository.pdf_list_detail.PdfListDetailRepository
 import com.example.readapp.data.repository.pdf_admin_pdf_view.PdfViewRepository
 import com.example.readapp.data.repository.pdf_user.PdfUserRepository
 import com.example.readapp.data.repository.profile.ProfileRepository
@@ -15,9 +15,9 @@ import com.example.readapp.ui.category.AddCategoryViewModel
 import com.example.readapp.ui.dashboard_user.DashboardUserViewModel
 import com.example.readapp.ui.login.LoginViewModel
 import com.example.readapp.ui.pdf.PdfAddViewModel
-import com.example.readapp.ui.pdf_admin.PdfListAdminViewModel
+import com.example.readapp.ui.pdf_admin.PdfAdminViewModel
 import com.example.readapp.ui.pdf_admin_edit.PdfEditViewModel
-import com.example.readapp.ui.pdf_admin_list_detail.PdfListDetailViewModel
+import com.example.readapp.ui.pdf_list_detail.PdfListDetailViewModel
 import com.example.readapp.ui.pdf_admin_pdf_view.PdfViewDetailViewModel
 import com.example.readapp.ui.pdf_user.PdfUserViewModel
 import com.example.readapp.ui.profile.ProfileViewModel
@@ -37,9 +37,9 @@ val appModule = module {
     single { CategoryRepository() }
     single { UserRepository(get(), get()) }
     single { PdfRepository() }
-    single { PdfListRepository() }
+    single { PdfAdminRepository() }
     single { PdfEditRepository(get()) }
-    single { PdfListAdminRepository(get(),get()) }
+    single { PdfListDetailRepository(get(),get()) }
     single { PdfViewRepository(get(), get()) }
     single { PdfUserRepository(get()) }
     single { ProfileRepository(get(), get()) }
@@ -52,7 +52,7 @@ val appModule = module {
     viewModel { PdfViewDetailViewModel(get()) }
     viewModel { PdfListDetailViewModel(get()) }
     viewModel { PdfEditViewModel(get()) }
-    viewModel { PdfListAdminViewModel(get()) }
+    viewModel { PdfAdminViewModel(get()) }
     viewModel { PdfAddViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { AddCategoryViewModel(get()) }

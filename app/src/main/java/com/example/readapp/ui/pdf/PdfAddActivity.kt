@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.readapp.R
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityPdfAddBinding
+import com.example.readapp.ui.dashboard_admin.DashboardAdminActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PdfAddActivity : AppCompatActivity() {
@@ -76,6 +77,8 @@ class PdfAddActivity : AppCompatActivity() {
                     isPdfUploadSuccessHandled = true
                     uploadPdfInfoToFirebase()
                     pdfUri = null
+                    startActivity(Intent(this, DashboardAdminActivity::class.java))
+                    finish()
                 }
             } else {
                 // Handle upload failure

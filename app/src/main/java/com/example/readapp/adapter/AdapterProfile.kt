@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowProfileFavoriteBinding
-import com.example.readapp.ui.pdf_admin_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
 import com.example.readapp.ui.profile.ProfileActivity
 import com.example.readapp.utils.MainUtils
 

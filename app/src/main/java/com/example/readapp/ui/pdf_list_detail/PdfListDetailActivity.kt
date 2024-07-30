@@ -1,4 +1,4 @@
-package com.example.readapp.ui.pdf_admin_list_detail
+package com.example.readapp.ui.pdf_list_detail
 
 import android.Manifest
 import android.app.AlertDialog
@@ -26,7 +26,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PdfListDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPdfListDetailBinding
+
     private val viewModel: PdfListDetailViewModel by viewModel()
+
     private lateinit var progressDialog: AlertDialog
 
     private var bookId = ""
@@ -68,16 +70,32 @@ class PdfListDetailActivity : AppCompatActivity() {
             binding.dateTv.text = MainUtils.formatTimeStamp(book.timestamp)
 
             MainUtils.loadCategory(book.categoryId, binding.categoryTv)
-            MainUtils.loadPdfFromUrlSinglePage(book.url, book.title, binding.pdfView, binding.progressBar, binding.pagesTv)
+            MainUtils.loadPdfFromUrlSinglePage(
+                book.url,
+                book.title,
+                binding.pdfView,
+                binding.progressBar,
+                binding.pagesTv
+            )
             MainUtils.loadPdfSize(book.url, book.title, binding.sizeTv)
             MainUtils.incrementBookViewCount(bookId)
 
             viewModel.isInMyFavorite.observe(this) { isInMyFavorite ->
                 if (isInMyFavorite) {
-                    binding.favbookBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0, 0)
+                    binding.favbookBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        0,
+                        R.drawable.ic_favorite_white,
+                        0,
+                        0
+                    )
                     binding.favbookBtn.text = "Remove Favorite"
                 } else {
-                    binding.favbookBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white, 0, 0)
+                    binding.favbookBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        0,
+                        R.drawable.ic_favorite_border_white,
+                        0,
+                        0
+                    )
                     binding.favbookBtn.text = "Add Favorite"
                 }
             }
@@ -122,37 +140,28 @@ class PdfListDetailActivity : AppCompatActivity() {
         }
 
         binding.favbookBtn.setOnClickListener {
-            if (firebaseAuth.currentUser == null) {
-                Toast.makeText(this, "You're not logged in", Toast.LENGTH_SHORT).show()
+            if (viewModel.isInMyFavorite.value == true) {
+                viewModel.removeFromFavorite(bookId)
             } else {
-                if (viewModel.isInMyFavorite.value == true) {
-                    viewModel.removeFromFavorite(bookId)
-                } else {
-                    viewModel.addToFavorite(bookId)
-                }
+                viewModel.addToFavorite(bookId)
             }
         }
 
         binding.submitBtn.setOnClickListener {
-            if (firebaseAuth.currentUser == null) {
-                Toast.makeText(this, "You're not logged in", Toast.LENGTH_SHORT).show()
+            val comment = binding.commentEt.text.toString().trim()
+            if (comment.isNotEmpty()) {
+                val modelComment = ModelComment(
+                    id = System.currentTimeMillis().toString(),
+                    bookId = bookId,
+                    timestamp = System.currentTimeMillis().toString(),
+                    uid = firebaseAuth.uid!!,
+                    comment = comment
+                )
+                viewModel.addComment(modelComment)
             } else {
-                val comment = binding.commentEt.text.toString().trim()
-                if (comment.isNotEmpty()) {
-                    val modelComment = ModelComment(
-                        id = System.currentTimeMillis().toString(),
-                        bookId = bookId,
-                        timestamp = System.currentTimeMillis().toString(),
-                        uid = firebaseAuth.uid!!,
-                        comment = comment
-                    )
-                    viewModel.addComment(modelComment)
-                } else {
-                    Toast.makeText(this, "Please enter comment", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this, "Please enter comment", Toast.LENGTH_SHORT).show()
             }
         }
-
         viewModel.fetchComments(bookId)
     }
 
@@ -176,7 +185,11 @@ class PdfListDetailActivity : AppCompatActivity() {
                 requestManageExternalStoragePermission()
             }
         } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 viewModel.downloadBook()
             } else {
                 requestStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -213,7 +226,8 @@ class PdfListDetailActivity : AppCompatActivity() {
     }
 
     private val requestStoragePermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
         if (isGranted) {
             //show progress
             progressDialog.setTitle("Downloading Book")
