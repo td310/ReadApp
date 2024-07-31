@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         //check user type
         loginViewModel.userType.observe(this, Observer { userType ->
             progressDialog.dismiss()
-            if (userType == "user") {
+            if (userType == "User") {
                 startActivity(Intent(this, DashboardUserActivity::class.java))
                 finish()
             } else if (userType == "admin") {

@@ -1,7 +1,7 @@
 package com.example.readapp.ui.profile_edit
 
 import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.example.readapp.R
 import com.example.readapp.databinding.ActivityProfileEditBinding
 import com.example.readapp.databinding.DialogChangePasswordBinding
+import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileEditActivity : AppCompatActivity() {
@@ -125,7 +126,6 @@ class ProfileEditActivity : AppCompatActivity() {
             } else if (newPassword != confirmNewPassword) {
                 Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show()
             } else {
-
             }
         }
     }
