@@ -70,13 +70,7 @@ class PdfListDetailActivity : AppCompatActivity() {
             binding.dateTv.text = MainUtils.formatTimeStamp(book.timestamp)
 
             MainUtils.loadCategory(book.categoryId, binding.categoryTv)
-            MainUtils.loadPdfFromUrlSinglePage(
-                book.url,
-                book.title,
-                binding.pdfView,
-                binding.progressBar,
-                binding.pagesTv
-            )
+            MainUtils.loadPdfThumbnail(book.url, binding.pdfThumbnailIv, binding.progressBar)
             MainUtils.loadPdfSize(book.url, book.title, binding.sizeTv)
             MainUtils.incrementBookViewCount(bookId)
 

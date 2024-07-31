@@ -43,7 +43,7 @@ class SplashActivity : ComponentActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             //get user type (user/admin)
                             val userType = snapshot.child("userType").value
-                            if(userType == "user"){
+                            if(userType == "User"){
                                 startActivity(Intent(this@SplashActivity, DashboardUserActivity::class.java))
                                 finish()
                             } else {

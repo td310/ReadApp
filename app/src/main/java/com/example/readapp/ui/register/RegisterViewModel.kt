@@ -24,7 +24,7 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
                     "email" to email,
                     "name" to name,
                     "profileImage" to "",
-                    "userType" to "user",
+                    "userType" to "User",
                     "timestamp" to System.currentTimeMillis()
                 )
                 uid?.let {

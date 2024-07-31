@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener
 class PdfUserRepository(private val database: FirebaseDatabase) {
 
     fun fetchCategories(callback: (List<ModelCategory>) -> Unit) {
-        val ref = FirebaseDatabase.getInstance().getReference("Categories")
+        val ref = database.getReference("Categories")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val categories = mutableListOf<ModelCategory>()
@@ -28,7 +28,6 @@ class PdfUserRepository(private val database: FirebaseDatabase) {
             }
         })
     }
-
     fun getAllBooks(callback: (List<ModelPdf>) -> Unit) {
         val ref = database.getReference("Books")
         ref.addValueEventListener(object : ValueEventListener {

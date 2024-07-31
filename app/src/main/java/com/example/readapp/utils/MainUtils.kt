@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.github.barteksc.pdfviewer.PDFView
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -160,69 +159,6 @@ object MainUtils {
             .addOnFailureListener { e ->
                 Log.d(TAG, "loadPdfSize: Failed to get metadata due to ${e.message}")
             }
-    }
-
-    //show only 1 page -> optimize resources
-
-    fun loadPdfFromUrlSinglePage(
-        pdfUrl: String,
-        pdfTitle: String,
-        pdfView: PDFView,
-        progressBar: View,
-        pagesTv: TextView?
-    ) {
-        // Generate a unique file name for the cached PDF
-        val cacheFile = File(pdfView.context.cacheDir, "$pdfTitle.pdf")
-
-        // Check if the file is already cached
-        if (cacheFile.exists()) {
-            loadPdfFromFile(cacheFile, pdfView, progressBar, pagesTv)
-            return
-        }
-
-        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
-        ref.getBytes(MAX_BYTES_PDF)
-            .addOnSuccessListener { bytes ->
-                // Save the file to cache
-                try {
-                    val fos = FileOutputStream(cacheFile)
-                    fos.write(bytes)
-                    fos.close()
-                    loadPdfFromFile(cacheFile, pdfView, progressBar, pagesTv)
-                } catch (e: IOException) {
-                    progressBar.visibility = View.INVISIBLE
-                    Log.d(TAG, "loadPdfFromUrlSinglePage: Failed to save file to cache due to ${e.message}")
-                }
-            }
-            .addOnFailureListener { e ->
-                progressBar.visibility = View.INVISIBLE
-                Log.d(TAG, "loadPdfFromUrlSinglePage: Failed to get bytes due to ${e.message}")
-            }
-    }
-
-    fun loadPdfFromFile(
-        file: File,
-        pdfView: PDFView,
-        progressBar: View,
-        pagesTv: TextView?
-    ) {
-        pdfView.fromFile(file)
-            .spacing(0)
-            .swipeHorizontal(false)
-            .enableSwipe(false)
-            .onError { t ->
-                progressBar.visibility = View.INVISIBLE
-                Log.d(TAG, "loadPdfFromFile: ${t.message}")
-            }
-            .onPageError { page, t ->
-                progressBar.visibility = View.VISIBLE
-                Log.d(TAG, "loadPdfFromFile: ${t.message}")
-            }
-            .onLoad { nbPages ->
-                progressBar.visibility = View.INVISIBLE
-                pagesTv?.text = "$nbPages"
-            }
-            .load()
     }
 
     //show pdf belong to categoryId

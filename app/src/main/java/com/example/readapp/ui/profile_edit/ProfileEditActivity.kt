@@ -1,9 +1,7 @@
 package com.example.readapp.ui.profile_edit
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,11 +16,10 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.readapp.R
 import com.example.readapp.databinding.ActivityProfileEditBinding
+import com.example.readapp.databinding.DialogChangePasswordBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileEditActivity : AppCompatActivity() {
@@ -30,7 +27,7 @@ class ProfileEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileEditBinding
     private val viewModel: ProfileEditViewModel by viewModel()
 
-    private lateinit var progressDialog: ProgressDialog
+    private lateinit var progressDialog: AlertDialog
 
     private var imageUri: Uri? = null
 
@@ -39,9 +36,12 @@ class ProfileEditActivity : AppCompatActivity() {
         binding = ActivityProfileEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please Wait")
-        progressDialog.setCanceledOnTouchOutside(false)
+        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
+        progressDialog = AlertDialog.Builder(this)
+            .setTitle("Please Wait")
+            .setView(progressDialogView)
+            .setCancelable(false)
+            .create()
 
         setupObservers()
         setupClickListeners()
@@ -95,7 +95,41 @@ class ProfileEditActivity : AppCompatActivity() {
         binding.updateBtn.setOnClickListener {
             validateData()
         }
+        //change password
+        binding.optionalTv.setOnClickListener {
+            addDialogPassword()
+        }
     }
+
+    private var repass = ""
+    private fun addDialogPassword() {
+        val dialogBinding = DialogChangePasswordBinding.inflate(layoutInflater)
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this,R.style.CustomDialog)
+        builder.setView(dialogBinding.root)
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        dialogBinding.dialogCancel.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        dialogBinding.dialogConfirm.setOnClickListener {
+            val currentPassword = dialogBinding.oldpasswordEt.text.toString().trim()
+            val newPassword = dialogBinding.passwordEt.text.toString().trim()
+            val confirmNewPassword = dialogBinding.confirmpasswordEt.text.toString().trim()
+
+            if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+            } else if (newPassword != confirmNewPassword) {
+                Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show()
+            } else {
+
+            }
+        }
+    }
+
 
     private var name = ""
     private fun validateData() {
@@ -156,16 +190,6 @@ class ProfileEditActivity : AppCompatActivity() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         cameraActivityResultLauncher.launch(intent)
-    }
-
-    private fun openCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            // Permission already granted, proceed with opening the camera
-            pickImageCamera()
-        } else {
-            // Request the permission
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
-        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
