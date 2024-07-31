@@ -2,6 +2,7 @@ package com.example.readapp.ui.pdf_list_detail
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -29,7 +30,7 @@ class PdfListDetailActivity : AppCompatActivity() {
 
     private val viewModel: PdfListDetailViewModel by viewModel()
 
-    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: ProgressDialog
 
     private var bookId = ""
 
@@ -160,12 +161,9 @@ class PdfListDetailActivity : AppCompatActivity() {
     }
 
     private fun setupProgressDialog() {
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
     }
 
     private fun checkPermissionsAndDownload() {

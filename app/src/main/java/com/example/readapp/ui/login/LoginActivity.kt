@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-        private lateinit var progressDialog: AlertDialog
+        private lateinit var progressDialog: ProgressDialog
     private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,12 +26,9 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         binding.noAccountTv.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))

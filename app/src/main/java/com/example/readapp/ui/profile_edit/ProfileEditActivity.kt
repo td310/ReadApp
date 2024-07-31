@@ -1,7 +1,8 @@
 package com.example.readapp.ui.profile_edit
 
 import android.app.Activity
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,6 +12,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.widget.Toast
 import android.view.Menu
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,15 +22,19 @@ import com.bumptech.glide.Glide
 import com.example.readapp.R
 import com.example.readapp.databinding.ActivityProfileEditBinding
 import com.example.readapp.databinding.DialogChangePasswordBinding
-import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileEditBinding
+
     private val viewModel: ProfileEditViewModel by viewModel()
 
-    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: ProgressDialog
+
+    private lateinit var dialogBinding: DialogChangePasswordBinding
+
+    private lateinit var alertDialog: AlertDialog
 
     private var imageUri: Uri? = null
 
@@ -37,12 +43,9 @@ class ProfileEditActivity : AppCompatActivity() {
         binding = ActivityProfileEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         setupObservers()
         setupClickListeners()
@@ -82,6 +85,24 @@ class ProfileEditActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
             }
         }
+
+        viewModel.passwordReauthStatus.observe(this) { success ->
+            if (success) {
+                dialogBinding.dialogConfirm.visibility = View.VISIBLE
+                Toast.makeText(this, "Password verified", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Incorrect current password", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.passwordChangeStatus.observe(this) { success ->
+            progressDialog.dismiss()
+            if (success) {
+                Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Failed to change password", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupClickListeners() {
@@ -96,40 +117,50 @@ class ProfileEditActivity : AppCompatActivity() {
         binding.updateBtn.setOnClickListener {
             validateData()
         }
-        //change password
+
         binding.optionalTv.setOnClickListener {
             addDialogPassword()
         }
     }
 
-    private var repass = ""
     private fun addDialogPassword() {
-        val dialogBinding = DialogChangePasswordBinding.inflate(layoutInflater)
+        dialogBinding = DialogChangePasswordBinding.inflate(layoutInflater)
 
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this,R.style.CustomDialog)
+        val builder = AlertDialog.Builder(this, R.style.CustomDialog)
         builder.setView(dialogBinding.root)
 
-        val alertDialog = builder.create()
+        alertDialog = builder.create()
         alertDialog.show()
 
         dialogBinding.dialogCancel.setOnClickListener {
             alertDialog.dismiss()
         }
 
-        dialogBinding.dialogConfirm.setOnClickListener {
+        dialogBinding.validateOldPassword.setOnClickListener {
             val currentPassword = dialogBinding.oldpasswordEt.text.toString().trim()
+            if (currentPassword.isEmpty()) {
+                Toast.makeText(this, "Please enter current password", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.reauthenticateUser(currentPassword)
+            }
+        }
+
+        dialogBinding.dialogConfirm.setOnClickListener {
             val newPassword = dialogBinding.passwordEt.text.toString().trim()
             val confirmNewPassword = dialogBinding.confirmpasswordEt.text.toString().trim()
 
-            if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+            if (newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             } else if (newPassword != confirmNewPassword) {
                 Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show()
             } else {
+                progressDialog.show()
+                viewModel.changePassword(newPassword)
+                alertDialog.dismiss()
             }
         }
+        dialogBinding.dialogConfirm.visibility = View.GONE
     }
-
 
     private var name = ""
     private fun validateData() {

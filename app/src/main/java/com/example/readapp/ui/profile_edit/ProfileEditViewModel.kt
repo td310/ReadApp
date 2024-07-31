@@ -18,6 +18,12 @@ class ProfileEditViewModel(private val repository: ProfileEditRepository) : View
     private val _uploadImageUrl = MutableLiveData<String?>()
     val uploadImageUrl: LiveData<String?> get() = _uploadImageUrl
 
+    private val _passwordReauthStatus = MutableLiveData<Boolean>()
+    val passwordReauthStatus: LiveData<Boolean> get() = _passwordReauthStatus
+
+    private val _passwordChangeStatus = MutableLiveData<Boolean>()
+    val passwordChangeStatus: LiveData<Boolean> get() = _passwordChangeStatus
+
     fun loadUserInfo() {
         repository.getUserInfo { user ->
             _userInfo.value = user
@@ -33,6 +39,18 @@ class ProfileEditViewModel(private val repository: ProfileEditRepository) : View
     fun uploadImage(imageUri: Uri) {
         repository.uploadImage(imageUri) { imageUrl ->
             _uploadImageUrl.value = imageUrl
+        }
+    }
+
+    fun reauthenticateUser(password: String) {
+        repository.reauthenticateUser(password) { success ->
+            _passwordReauthStatus.value = success
+        }
+    }
+
+    fun changePassword(newPassword: String) {
+        repository.changePassword(newPassword) { success ->
+            _passwordChangeStatus.value = success
         }
     }
 }

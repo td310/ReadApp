@@ -1,6 +1,7 @@
 package com.example.readapp.ui.pdf_admin_edit
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -15,7 +16,7 @@ class PdfEditActivity : AppCompatActivity() {
     private val viewModel: PdfEditViewModel by viewModel()
 
     private var bookId = ""
-    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: ProgressDialog
     private lateinit var categoryTitleArrayList: ArrayList<String>
     private lateinit var categoryIdArrayList: ArrayList<String>
     private var selectedCategoryId = ""
@@ -30,12 +31,9 @@ class PdfEditActivity : AppCompatActivity() {
 
         bookId = intent.getStringExtra("bookId")!!
 
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         observeViewModel()
         viewModel.loadCategories()

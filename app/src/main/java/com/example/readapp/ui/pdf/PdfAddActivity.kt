@@ -22,7 +22,7 @@ class PdfAddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPdfAddBinding
 
-    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: ProgressDialog
 
     private val pdfAddViewModel: PdfAddViewModel by viewModel()
 
@@ -33,12 +33,9 @@ class PdfAddActivity : AppCompatActivity() {
         binding = ActivityPdfAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

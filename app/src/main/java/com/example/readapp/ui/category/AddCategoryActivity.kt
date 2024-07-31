@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddCategoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddCategoryBinding
-    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressDialog: ProgressDialog
     private val categoryViewModel: AddCategoryViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,12 +25,9 @@ class AddCategoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //ui 4 progress dialog
-        val progressDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-        progressDialog = AlertDialog.Builder(this)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         //back btn
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

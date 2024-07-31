@@ -2,6 +2,7 @@ package com.example.readapp.data.repository.profile_edit
 
 import android.net.Uri
 import com.example.readapp.data.model.ModelUser
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -57,5 +58,27 @@ class ProfileEditRepository(
             .addOnFailureListener {
                 onComplete(null)
             }
+    }
+    fun reauthenticateUser(password: String, onComplete: (Boolean) -> Unit) {
+        val user = firebaseAuth.currentUser
+        if (user != null && user.email != null) {
+            val credential = EmailAuthProvider.getCredential(user.email!!, password)
+            user.reauthenticate(credential).addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
+        } else {
+            onComplete(false)
+        }
+    }
+
+    fun changePassword(newPassword: String, onComplete: (Boolean) -> Unit) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            user.updatePassword(newPassword).addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
+        } else {
+            onComplete(false)
+        }
     }
 }

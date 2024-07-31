@@ -44,19 +44,6 @@ object MainUtils {
 
     //delete book
     fun deleteBook(context: Context, bookId: String, bookUrl: String, bookTitle: String) {
-        Log.d(TAG, "deleteBook: Deleting...")
-
-        val progressDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_progress, null)
-        val progressMessage: TextView = progressDialogView.findViewById(R.id.progress_message)
-        progressMessage.text = "Deleting $bookTitle"
-
-        val progressDialog = AlertDialog.Builder(context)
-            .setTitle("Please Wait")
-            .setView(progressDialogView)
-            .setCancelable(false)
-            .create()
-
-        progressDialog.show()
 
         Log.d(TAG, "deleteBook: Deleting from storage...")
         val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl)
@@ -72,7 +59,6 @@ object MainUtils {
                         Log.d(TAG, "deleteBook: Deleted from database")
                         // Remove from favorites of all users
                         removeFromFavorite(context, bookId) {
-                            progressDialog.dismiss()
                             Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -83,11 +69,9 @@ object MainUtils {
                             "Failed to delete from database due to ${e.message}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        progressDialog.dismiss()
                     }
             }
             .addOnFailureListener { e ->
-                progressDialog.dismiss()
                 Log.d(TAG, "deleteBook: Failed to delete due to ${e.message}")
                 Toast.makeText(context, "Failed to delete due to ${e.message}", Toast.LENGTH_SHORT).show()
             }
@@ -244,30 +228,6 @@ object MainUtils {
                 override fun onCancelled(error: DatabaseError) {}
             })
     }
-
-//remove favorite
-//fun removeFromFavorite(context: Context, bookId: String, onSuccess: () -> Unit = {}) {
-//    val ref = FirebaseDatabase.getInstance().getReference("Users")
-//    ref.addListenerForSingleValueEvent(object : ValueEventListener {
-//        override fun onDataChange(snapshot: DataSnapshot) {
-//            for (userSnapshot in snapshot.children) {
-//                userSnapshot.ref.child("Favorites").child(bookId)
-//                    .removeValue()
-//                    .addOnSuccessListener {
-//                        Log.d(TAG, "removeFromAllFavorites: Removed from favorite of user ${userSnapshot.key}")
-//                    }
-//                    .addOnFailureListener { e ->
-//                        Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorite of user ${userSnapshot.key} due to ${e.message}")
-//                    }
-//            }
-//            onSuccess()
-//        }
-//
-//        override fun onCancelled(error: DatabaseError) {
-//            Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorites due to ${error.message}")
-//        }
-//    })
-//}
 
 //AdapterComment
     fun loadUserDetails(model: ModelComment, binding: RowCommentBinding) {
