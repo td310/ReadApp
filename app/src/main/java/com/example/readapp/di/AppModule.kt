@@ -32,7 +32,6 @@ val appModule = module {
     single { FirebaseAuth.getInstance() }
     single { FirebaseDatabase.getInstance() }
     single { FirebaseStorage.getInstance() }
-    single { FirebaseDatabase.getInstance().reference }
 
     single { CategoryRepository() }
     single { UserRepository(get(), get()) }

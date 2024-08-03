@@ -19,11 +19,17 @@ import com.example.readapp.adapter.AdapterProfile
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowCommentBinding
+import com.github.barteksc.pdfviewer.PDFView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -278,39 +284,52 @@ object MainUtils {
             return
         }
 
+        progressBar.visibility = View.VISIBLE
         val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
-        ref.getBytes(MAX_BYTES_PDF)
-            .addOnSuccessListener { bytes ->
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val bytes = ref.getBytes(MAX_BYTES_PDF).await()
                 try {
                     val fos = FileOutputStream(cacheFile)
                     fos.write(bytes)
                     fos.close()
                     loadThumbnailFromCache(cacheFile, imageView, progressBar)
                 } catch (e: IOException) {
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.INVISIBLE
+                        Log.d(TAG, "Failed to save file to cache due to ${e.message}")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
                     progressBar.visibility = View.INVISIBLE
-                    Log.d(TAG, "loadPdfThumbnail: Failed to save file to cache due to ${e.message}")
+                    Log.d(TAG, "Failed to get bytes due to ${e.message}")
                 }
             }
-            .addOnFailureListener { e ->
-                progressBar.visibility = View.INVISIBLE
-                Log.d(TAG, "loadPdfThumbnail: Failed to get bytes due to ${e.message}")
-            }
+        }
     }
 
     private fun loadThumbnailFromCache(file: File, imageView: ImageView, progressBar: View) {
-        try {
-            val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
-            val page = pdfRenderer.openPage(0)
-            val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
-            page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-            page.close()
-            pdfRenderer.close()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
+                val page = pdfRenderer.openPage(0)
+                val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
+                page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                page.close()
+                pdfRenderer.close()
 
-            imageView.setImageBitmap(bitmap)
-            progressBar.visibility = View.INVISIBLE
-        } catch (e: IOException) {
-            progressBar.visibility = View.INVISIBLE
-            Log.d(TAG, "loadThumbnailFromCache: Failed to load thumbnail from cache due to ${e.message}")
+                withContext(Dispatchers.Main) {
+                    imageView.setImageBitmap(bitmap)
+                    progressBar.visibility = View.INVISIBLE
+                }
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.INVISIBLE
+                    Log.d(TAG, "Failed to load thumbnail from cache due to ${e.message}")
+                }
+            }
         }
     }
 }

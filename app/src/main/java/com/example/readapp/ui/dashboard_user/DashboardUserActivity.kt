@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityDashboardUserBinding
 import com.example.readapp.ui.login.LoginActivity
 import com.example.readapp.ui.pdf_user.PdfUserFragment
 import com.example.readapp.ui.profile.ProfileActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,6 +25,7 @@ class DashboardUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardUserBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     private val viewModel: DashboardUserViewModel by viewModel()
 
@@ -29,29 +34,27 @@ class DashboardUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.categories.observe(this) { categories ->
-            setupWithViewPagerAdapter(binding.viewPager, categories)
-        }
-
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
 
+        viewModel.categories.observe(this) { categories ->
+            setupWithViewPagerAdapter(categories)
+        }
+
         viewModel.fetchCategoriesWithDefaults()
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
         binding.logoutBtn.setOnClickListener {
             firebaseAuth.signOut()
             startActivity(Intent(this, LoginActivity::class.java))
-            finish()
         }
-
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 
-    private fun setupWithViewPagerAdapter(viewPager: ViewPager, categories: List<ModelCategory>) {
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
+    private fun setupWithViewPagerAdapter(categories: List<ModelCategory>) {
+        viewPagerAdapter = ViewPagerAdapter(this)
+        binding.viewPager.adapter = viewPagerAdapter
 
         categories.forEach { category ->
             viewPagerAdapter.addFragment(
@@ -60,42 +63,42 @@ class DashboardUserActivity : AppCompatActivity() {
             )
         }
 
-        viewPager.adapter = viewPagerAdapter
-    }
-
-    class ViewPagerAdapter(fm: FragmentManager, behavior: Int) : FragmentPagerAdapter(fm, behavior) {
-        private val fragmentsList: ArrayList<PdfUserFragment> = ArrayList()
-        private val fragmentTitleList: ArrayList<String> = ArrayList()
-
-        override fun getCount(): Int {
-            return fragmentsList.size
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return fragmentsList[position]
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return fragmentTitleList[position]
-        }
-
-        fun addFragment(fragment: PdfUserFragment, title: String) {
-            fragmentsList.add(fragment)
-            fragmentTitleList.add(title)
-        }
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = viewPagerAdapter.getTitle(position)
+        }.attach()
     }
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser == null) {
-            //not login, user can stay in user dashboard without login
             binding.subTitleTv.text = "Not Logged In"
             binding.profileBtn.visibility = View.GONE
         } else {
-            // loggin, get & show user info
             val email = firebaseUser.email
             binding.subTitleTv.text = email
             binding.profileBtn.visibility = View.VISIBLE
         }
     }
+
+    class ViewPagerAdapter(
+        fragmentActivity: FragmentActivity
+    ) : FragmentStateAdapter(fragmentActivity) {
+
+        private val fragmentsList: MutableList<Fragment> = ArrayList()
+        private val fragmentTitleList: MutableList<String> = ArrayList()
+
+        override fun getItemCount(): Int = fragmentsList.size
+
+        override fun createFragment(position: Int): Fragment = fragmentsList[position]
+
+        fun addFragment(fragment: Fragment, title: String) {
+            fragmentsList.add(fragment)
+            fragmentTitleList.add(title)
+        }
+
+        fun getTitle(position: Int): String = fragmentTitleList[position]
+    }
+
 }
+
+

@@ -67,3 +67,4 @@ class PdfUserFragment : Fragment() {
         return binding.root
     }
 }
+
