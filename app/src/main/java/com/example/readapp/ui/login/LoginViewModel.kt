@@ -18,23 +18,14 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     val errorMessage: LiveData<String> get() = _errorMessage
 
     fun login(email: String, password: String) {
-        userRepository.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                val uid = FirebaseAuth.getInstance().currentUser?.uid
-                //if user id not null then get user type
-                uid?.let { id ->
-                    userRepository.getUserType(id)
-                        .addOnSuccessListener { snapshot ->
-                            _userType.value = snapshot.child("userType").value as String
-                            _loginState.value = true
-                        }
-                        .addOnFailureListener { e ->
-                            _errorMessage.value = e.message
-                        }
-                }
+        userRepository.login(email, password)
+            .addOnSuccessListener { snapshot ->
+                _userType.value = snapshot.child("userType").value as String
+                _loginState.value = true
             }
             .addOnFailureListener { e ->
                 _errorMessage.value = e.message
             }
     }
 }
+

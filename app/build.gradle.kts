@@ -80,19 +80,19 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.5.1")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     //koin
-    implementation ("io.insert-koin:koin-core:3.2.2")
-    implementation ("io.insert-koin:koin-android:3.3.0")
-    implementation ("io.insert-koin:koin-androidx-navigation:3.3.0")
-    implementation ("io.insert-koin:koin-androidx-compose:3.3.0")
+    implementation (libs.koin.core)
+    implementation (libs.koin.android)
+    implementation (libs.koin.androidx.navigation)
+    implementation (libs.koin.androidx.compose)
 
     //pdf viewer
-    implementation("com.github.mhiew:android-pdf-viewer:3.2.0-beta.3")
+    implementation(libs.android.pdf.viewer)
 
     //Glide
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation (libs.glide)
 
 }

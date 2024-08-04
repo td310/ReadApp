@@ -1,6 +1,6 @@
 package com.example.readapp.di
 
-import com.example.readapp.data.repository.category.CategoryRepository
+import  com.example.readapp.data.repository.category.CategoryRepository
 import com.example.readapp.data.repository.pdf_admin_edit.PdfEditRepository
 import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 import com.example.readapp.data.repository.pdf.PdfRepository

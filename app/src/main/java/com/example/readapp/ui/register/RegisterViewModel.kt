@@ -16,29 +16,13 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
     val errorMessage: LiveData<String> get() = _errorMessage
 
     fun register(name: String, email: String, password: String) {
-        userRepository.createUserWithEmailAndPassword(email, password)
+        userRepository.signUp(name, email, password)
             .addOnSuccessListener {
-                val uid = FirebaseAuth.getInstance().currentUser?.uid
-                val user = mapOf(
-                    "uid" to uid,
-                    "email" to email,
-                    "name" to name,
-                    "profileImage" to "",
-                    "userType" to "User",
-                    "timestamp" to System.currentTimeMillis()
-                )
-                uid?.let {
-                    userRepository.updateUser(it, user)
-                        .addOnSuccessListener {
-                            _registrationState.value = true
-                        }
-                        .addOnFailureListener { e ->
-                            _errorMessage.value = e.message
-                        }
-                }
+                _registrationState.value = true
             }
             .addOnFailureListener { e ->
                 _errorMessage.value = e.message
             }
     }
 }
+
