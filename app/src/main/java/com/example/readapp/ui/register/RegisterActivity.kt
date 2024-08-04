@@ -1,17 +1,15 @@
 package com.example.readapp.ui.register
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.readapp.R
 import com.example.readapp.databinding.ActivityRegisterBinding
 import com.example.readapp.ui.dashboard_user.DashboardUserActivity
+import com.example.readapp.ui.login.LoginActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
@@ -46,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
             progressDialog.dismiss()
             if (success) {
                 Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, DashboardUserActivity::class.java))
+                startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.readapp.data.repository.login_register.UserRepository
-import com.google.firebase.auth.FirebaseAuth
 
 class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
 

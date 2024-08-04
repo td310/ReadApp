@@ -97,8 +97,6 @@ class DashboardAdminActivity : AppCompatActivity() {
             //not login, go back loggin
             startActivity(Intent(this,LoginActivity::class.java))
             finish()
-            binding.profileBtn.visibility = View.GONE
-            binding.logoutBtn.visibility = View.GONE
         }
         else{
             val email = firebaseUser.email
