@@ -27,7 +27,7 @@ class DashboardAdminActivity : AppCompatActivity() {
 
     private lateinit var adapterDashboardAdmin: AdapterDashboardAdmin
 
-    private val categoryViewModel: DashboardAdminViewModel by viewModel()
+    private val dsViewModel: DashboardAdminViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,19 +73,16 @@ class DashboardAdminActivity : AppCompatActivity() {
         }
 
         setupObserve()
-        categoryViewModel.loadCategories()
+        dsViewModel.loadCategories()
 
     }
 
     private fun setupObserve(){
-        categoryViewModel.categories.observe(this, { categoryList ->
+        dsViewModel.categories.observe(this, { categoryList ->
             adapterDashboardAdmin = AdapterDashboardAdmin(this, categoryList as ArrayList<ModelCategory>)
             binding.categoryRv.adapter = adapterDashboardAdmin
         })
 
-        categoryViewModel.errorMessage.observe(this, { errorMessage ->
-            Toast.makeText(this, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-        })
     }
 
     private fun checkUser() {

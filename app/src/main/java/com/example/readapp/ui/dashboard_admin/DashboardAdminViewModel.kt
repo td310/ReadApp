@@ -10,9 +10,6 @@ class DashboardAdminViewModel(private val repository: DashboardAdminRepository) 
     private val _categories = MutableLiveData<List<ModelCategory>>()
     val categories: LiveData<List<ModelCategory>> get() = _categories
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
-
     fun loadCategories() {
         repository.loadCategories(
             onSuccess = { categoryList ->
