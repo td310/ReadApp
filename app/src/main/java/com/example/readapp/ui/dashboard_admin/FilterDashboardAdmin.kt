@@ -1,10 +1,10 @@
-package com.example.readapp.ui.category
+package com.example.readapp.ui.dashboard_admin
 
 import android.widget.Filter
 import com.example.readapp.adapter.AdapterDashboardAdmin
 import com.example.readapp.data.model.ModelCategory
 
-class FilterCategory :Filter {
+class FilterDashboardAdmin :Filter {
     //arraylist to search
     private var filterList: ArrayList<ModelCategory>
 

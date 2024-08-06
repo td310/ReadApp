@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.R
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.RowCategoryBinding
-import com.example.readapp.ui.category.FilterCategory
+import com.example.readapp.ui.dashboard_admin.FilterDashboardAdmin
 import com.example.readapp.ui.pdf_admin.PdfAdminActivity
 import com.example.readapp.utils.MainUtils
 import com.google.firebase.database.FirebaseDatabase
@@ -30,7 +30,7 @@ class AdapterDashboardAdmin : RecyclerView.Adapter<AdapterDashboardAdmin.HolderD
 
     private var filterList: ArrayList<ModelCategory>
 
-    private var filter: FilterCategory? = null
+    private var filter: FilterDashboardAdmin? = null
 
     constructor(context: Context, categoryArrayList: ArrayList<ModelCategory>) {
         this.context = context
@@ -106,8 +106,8 @@ class AdapterDashboardAdmin : RecyclerView.Adapter<AdapterDashboardAdmin.HolderD
 
     override fun getFilter(): Filter {
         if (filter == null) {
-            filter = FilterCategory(filterList, this)
+            filter = FilterDashboardAdmin(filterList, this)
         }
-        return filter as FilterCategory
+        return filter as FilterDashboardAdmin
     }
 }
