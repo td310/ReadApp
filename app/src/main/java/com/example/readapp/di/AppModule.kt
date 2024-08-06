@@ -1,6 +1,7 @@
 package com.example.readapp.di
 
 import  com.example.readapp.data.repository.category.CategoryRepository
+import com.example.readapp.data.repository.dashboard_admin.DashboardAdminRepository
 import com.example.readapp.data.repository.pdf_admin_edit.PdfEditRepository
 import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 import com.example.readapp.data.repository.pdf.PdfRepository
@@ -8,10 +9,11 @@ import com.example.readapp.ui.register.RegisterViewModel
 import com.example.readapp.data.repository.login_register.UserRepository
 import com.example.readapp.data.repository.pdf_list_detail.PdfListDetailRepository
 import com.example.readapp.data.repository.pdf_admin_pdf_view.PdfViewRepository
-import com.example.readapp.data.repository.pdf_user.PdfUserRepository
+import com.example.readapp.data.repository.dashboard_user.DashboardUserRepository
 import com.example.readapp.data.repository.profile.ProfileRepository
 import com.example.readapp.data.repository.profile_edit.ProfileEditRepository
 import com.example.readapp.ui.category.AddCategoryViewModel
+import com.example.readapp.ui.dashboard_admin.DashboardAdminViewModel
 import com.example.readapp.ui.dashboard_user.DashboardUserViewModel
 import com.example.readapp.ui.login.LoginViewModel
 import com.example.readapp.ui.pdf.PdfAddViewModel
@@ -40,13 +42,15 @@ val appModule = module {
     single { PdfEditRepository(get()) }
     single { PdfListDetailRepository(get(),get()) }
     single { PdfViewRepository(get(), get()) }
-    single { PdfUserRepository(get()) }
+    single { DashboardUserRepository(get()) }
+    single { DashboardAdminRepository(get()) }
     single { ProfileRepository(get(), get()) }
     single { ProfileEditRepository(get(), get(), get()) }
 
     viewModel { ProfileEditViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { DashboardUserViewModel(get()) }
+    viewModel { DashboardAdminViewModel(get()) }
     viewModel { PdfUserViewModel(get()) }
     viewModel { PdfViewDetailViewModel(get()) }
     viewModel { PdfListDetailViewModel(get()) }

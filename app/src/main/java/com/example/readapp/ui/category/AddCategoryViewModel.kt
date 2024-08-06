@@ -9,10 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 class AddCategoryViewModel(private val categoryRepository: CategoryRepository): ViewModel() {
     private val _addCategoryState = MutableLiveData<Boolean>()
     val addCategoryState: LiveData<Boolean> get() = _addCategoryState
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
-
     fun addCategory(category: String) {
         val uid = FirebaseAuth.getInstance().uid
         val timestamp = System.currentTimeMillis()
@@ -22,11 +18,7 @@ class AddCategoryViewModel(private val categoryRepository: CategoryRepository): 
                 .addOnSuccessListener {
                     _addCategoryState.value = true
                 }
-                .addOnFailureListener { e ->
-                    _errorMessage.value = e.message
-                }
         } else {
-            _errorMessage.value = "User not authenticated"
         }
     }
 }

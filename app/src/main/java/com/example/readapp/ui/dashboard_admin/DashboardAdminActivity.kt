@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.readapp.adapter.AdapterCategory
+import com.example.readapp.adapter.AdapterDashboardAdmin
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityDashboardAdminBinding
 import com.example.readapp.ui.category.AddCategoryActivity
@@ -18,12 +18,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardAdminActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardAdminBinding
+
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var categoryArrayList: ArrayList<ModelCategory>
-    private lateinit var adapterCategory: AdapterCategory
+
+    private lateinit var adapterDashboardAdmin: AdapterDashboardAdmin
+
+    private val categoryViewModel: DashboardAdminViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +36,6 @@ class DashboardAdminActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
-        loadCategories()
 
         //logout
         binding.logoutBtn.setOnClickListener {
@@ -46,7 +49,7 @@ class DashboardAdminActivity : AppCompatActivity() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 try {
-                    adapterCategory.filter.filter(s)
+                    adapterDashboardAdmin.filter.filter(s)
                 }
                 catch (e:Exception){
                 }
@@ -68,26 +71,20 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+        setupObserve()
+        categoryViewModel.loadCategories()
+
     }
 
-    //load category in main screen
-    private fun loadCategories() {
-        categoryArrayList = ArrayList()
-        val ref = FirebaseDatabase.getInstance().getReference("Categories")
-        ref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                categoryArrayList.clear()
-                for(ds in snapshot.children){
-                    val model = ds.getValue(ModelCategory::class.java)
-                    categoryArrayList.add(model!!)
-                }
-                adapterCategory = AdapterCategory(this@DashboardAdminActivity,categoryArrayList)
-                binding.categoryRv.adapter = adapterCategory
-            }
+    private fun setupObserve(){
+        categoryViewModel.categories.observe(this, { categoryList ->
+            adapterDashboardAdmin = AdapterDashboardAdmin(this, categoryList as ArrayList<ModelCategory>)
+            binding.categoryRv.adapter = adapterDashboardAdmin
+        })
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+        categoryViewModel.errorMessage.observe(this, { errorMessage ->
+            Toast.makeText(this, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
         })
     }
 

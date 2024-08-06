@@ -48,11 +48,6 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-        registerViewModel.errorMessage.observe(this) { error ->
-            progressDialog.dismiss()
-            Toast.makeText(this, "Failed: $error", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private var name = ""

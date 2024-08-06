@@ -84,10 +84,6 @@ class PdfAddActivity : AppCompatActivity() {
             }
         })
 
-        pdfAddViewModel.errorMessage.observe(this, { message ->
-            Toast.makeText(this, "Failed to upload due to $message", Toast.LENGTH_SHORT).show()
-        })
-
         pdfAddViewModel.categories.observe(this, { categories ->
             categoryArrayList.clear()
             categoryArrayList.addAll(categories)

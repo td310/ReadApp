@@ -1,7 +1,7 @@
 package com.example.readapp.ui.category
 
 import android.widget.Filter
-import com.example.readapp.adapter.AdapterCategory
+import com.example.readapp.adapter.AdapterDashboardAdmin
 import com.example.readapp.data.model.ModelCategory
 
 class FilterCategory :Filter {
@@ -9,11 +9,11 @@ class FilterCategory :Filter {
     private var filterList: ArrayList<ModelCategory>
 
     //adapter to filter
-    public var adapterCategory: AdapterCategory
+    public var adapterDashboardAdmin: AdapterDashboardAdmin
 
-    constructor(filterList: ArrayList<ModelCategory>, adapterCategory: AdapterCategory) : super() {
+    constructor(filterList: ArrayList<ModelCategory>, adapterDashboardAdmin: AdapterDashboardAdmin) : super() {
         this.filterList = filterList
-        this.adapterCategory = adapterCategory
+        this.adapterDashboardAdmin = adapterDashboardAdmin
     }
 
     //search fun
@@ -41,8 +41,8 @@ class FilterCategory :Filter {
     }
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-        adapterCategory.categoryArrayList = results.values as ArrayList<ModelCategory>
+        adapterDashboardAdmin.categoryArrayList = results.values as ArrayList<ModelCategory>
 
-        adapterCategory.notifyDataSetChanged()
+        adapterDashboardAdmin.notifyDataSetChanged()
     }
 }

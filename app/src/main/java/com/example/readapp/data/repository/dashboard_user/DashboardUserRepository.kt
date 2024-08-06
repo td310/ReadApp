@@ -1,4 +1,4 @@
-package com.example.readapp.data.repository.pdf_user
+package com.example.readapp.data.repository.dashboard_user
 
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.data.model.ModelPdf
@@ -7,7 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class PdfUserRepository(private val database: FirebaseDatabase) {
+class DashboardUserRepository(private val database: FirebaseDatabase) {
 
     fun fetchCategories(callback: (List<ModelCategory>) -> Unit) {
         val ref = database.getReference("Categories")

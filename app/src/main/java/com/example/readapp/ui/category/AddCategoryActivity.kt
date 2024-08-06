@@ -1,17 +1,13 @@
 package com.example.readapp.ui.category
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.readapp.R
 import com.example.readapp.databinding.ActivityAddCategoryBinding
 import com.example.readapp.ui.dashboard_admin.DashboardAdminActivity
-import com.example.readapp.ui.dashboard_user.DashboardUserActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddCategoryActivity : AppCompatActivity() {
@@ -24,7 +20,6 @@ class AddCategoryActivity : AppCompatActivity() {
         binding = ActivityAddCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //ui 4 progress dialog
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Please wait...")
         progressDialog.setCanceledOnTouchOutside(false)
@@ -47,7 +42,6 @@ class AddCategoryActivity : AppCompatActivity() {
         observeViewModel()
     }
 
-    //this fun will watch category been added succesfully
     private fun observeViewModel() {
         categoryViewModel.addCategoryState.observe(this, { isSuccess ->
             progressDialog.dismiss()
@@ -56,11 +50,6 @@ class AddCategoryActivity : AppCompatActivity() {
                 startActivity(Intent(this, DashboardAdminActivity::class.java))
                 finish()
             }
-        })
-
-        categoryViewModel.errorMessage.observe(this, { message ->
-            progressDialog.dismiss()
-            Toast.makeText(this, "Failed to add due to $message", Toast.LENGTH_SHORT).show()
         })
     }
 

@@ -6,10 +6,8 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,7 +17,6 @@ import com.example.readapp.adapter.AdapterProfile
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowCommentBinding
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

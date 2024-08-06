@@ -21,14 +21,16 @@ import com.example.readapp.ui.pdf_admin.PdfAdminActivity
 import com.example.readapp.utils.MainUtils
 import com.google.firebase.database.FirebaseDatabase
 
-class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Filterable {
+class AdapterDashboardAdmin : RecyclerView.Adapter<AdapterDashboardAdmin.HolderDashboardAdmin>, Filterable {
     private val context: Context
+
     public var categoryArrayList: ArrayList<ModelCategory>
+
+    private lateinit var binding: RowCategoryBinding
+
     private var filterList: ArrayList<ModelCategory>
 
     private var filter: FilterCategory? = null
-
-    private lateinit var binding: RowCategoryBinding
 
     constructor(context: Context, categoryArrayList: ArrayList<ModelCategory>) {
         this.context = context
@@ -36,21 +38,24 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
         this.filterList = categoryArrayList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderCategory {
+    inner class HolderDashboardAdmin(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var categoryTv: TextView = binding.categoryTv
+        var deleteBtn: ImageButton = binding.deleteBtn
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderDashboardAdmin {
         binding = RowCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
-        return HolderCategory(binding.root)
+        return HolderDashboardAdmin(binding.root)
     }
 
     override fun getItemCount(): Int {
         return categoryArrayList.size
     }
 
-    override fun onBindViewHolder(holder: HolderCategory, position: Int) {
+    override fun onBindViewHolder(holder: HolderDashboardAdmin, position: Int) {
         val model = categoryArrayList[position]
         val id = model.id
         val category = model.category
-        val uid = model.uid
-        val timestamp = model.timestamp
 
         holder.categoryTv.text = category
 
@@ -69,7 +74,7 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
 
             confirmBtn.setOnClickListener {
                 Toast.makeText(context, "Deleting", Toast.LENGTH_SHORT).show()
-                deleteCategory(model, holder)
+                deleteCategory(model)
                 alertDialog.dismiss()
             }
 
@@ -84,7 +89,7 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
         }
     }
 
-    private fun deleteCategory(model: ModelCategory, holder: HolderCategory) {
+    private fun deleteCategory(model: ModelCategory) {
         val id = model.id
         //delete cate -> delete all books in category
         MainUtils.deleteBooksInCategory(context, id) {
@@ -97,11 +102,6 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
                     Toast.makeText(context, "Unable to delete due to ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
-    }
-
-    inner class HolderCategory(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var categoryTv: TextView = binding.categoryTv
-        var deleteBtn: ImageButton = binding.deleteBtn
     }
 
     override fun getFilter(): Filter {

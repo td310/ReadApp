@@ -60,12 +60,6 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
         })
-
-        //login failed
-        loginViewModel.errorMessage.observe(this, Observer { error ->
-            progressDialog.dismiss()
-            Toast.makeText(this, "Login Failed: $error", Toast.LENGTH_SHORT).show()
-        })
     }
 
     private var email = ""

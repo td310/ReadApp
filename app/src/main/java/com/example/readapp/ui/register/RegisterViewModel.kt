@@ -11,16 +11,10 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
     private val _registrationState = MutableLiveData<Boolean>()
     val registrationState: LiveData<Boolean> get() = _registrationState
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
-
     fun register(name: String, email: String, password: String) {
         userRepository.signUp(name, email, password)
             .addOnSuccessListener {
                 _registrationState.value = true
-            }
-            .addOnFailureListener { e ->
-                _errorMessage.value = e.message
             }
     }
 }

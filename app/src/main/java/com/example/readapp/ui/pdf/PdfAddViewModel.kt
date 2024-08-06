@@ -17,9 +17,6 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
     private val _uploadState = MutableLiveData<Boolean>()
     val uploadState: LiveData<Boolean> get() = _uploadState
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
-
     private val _categories = MutableLiveData<List<ModelCategory>>()
     val categories: LiveData<List<ModelCategory>> get() = _categories
 
@@ -34,10 +31,6 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
                 uploadedPdfUrl = uri.toString()
                 _uploadState.value = true
             }
-            .addOnFailureListener { e ->
-                _errorMessage.value = e.message
-                _uploadState.value = false
-            }
     }
 
     fun uploadPdfInfoToFirebase(
@@ -51,10 +44,6 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
                 .addOnSuccessListener {
                     _uploadState.value = true
                 }
-                .addOnFailureListener { e ->
-                    _errorMessage.value = e.message
-                    _uploadState.value = false
-                }
         }
     }
 
@@ -66,7 +55,6 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                _errorMessage.value = error.message
             }
         })
     }
