@@ -25,11 +25,13 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
 
     fun uploadPdfToFirebaseStorage(pdfUri: Uri) {
         timestamp = System.currentTimeMillis()
-        val filePath = "Books/$timestamp"
-        pdfRepository.uploadPdfToFirebaseStorage(pdfUri, filePath)
+        pdfRepository.uploadPdfToFirebaseStorage(pdfUri, timestamp)
             .addOnSuccessListener { uri ->
                 uploadedPdfUrl = uri.toString()
                 _uploadState.value = true
+            }
+            .addOnFailureListener {
+                _uploadState.value = false
             }
     }
 
@@ -43,6 +45,9 @@ class PdfAddViewModel(private val pdfRepository: PdfRepository) : ViewModel() {
             pdfRepository.uploadPdfInfoToFirebase(uid, timestamp, title, description, categoryId, url)
                 .addOnSuccessListener {
                     _uploadState.value = true
+                }
+                .addOnFailureListener {
+                    _uploadState.value = false
                 }
         }
     }

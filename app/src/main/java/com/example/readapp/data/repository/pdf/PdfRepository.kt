@@ -8,7 +8,9 @@ import com.google.firebase.storage.FirebaseStorage
 
 class PdfRepository {
 
-    fun uploadPdfToFirebaseStorage(pdfUri: Uri, filePath: String): Task<Uri> {
+
+    fun uploadPdfToFirebaseStorage(pdfUri: Uri, timestamp: Long): Task<Uri> {
+        val filePath = "Books/$timestamp"
         val storageReference = FirebaseStorage.getInstance().getReference(filePath)
         return storageReference.putFile(pdfUri)
             .continueWithTask { task ->
