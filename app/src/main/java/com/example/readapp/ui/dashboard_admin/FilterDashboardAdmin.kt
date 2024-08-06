@@ -5,10 +5,8 @@ import com.example.readapp.adapter.AdapterDashboardAdmin
 import com.example.readapp.data.model.ModelCategory
 
 class FilterDashboardAdmin :Filter {
-    //arraylist to search
     private var filterList: ArrayList<ModelCategory>
 
-    //adapter to filter
     public var adapterDashboardAdmin: AdapterDashboardAdmin
 
     constructor(filterList: ArrayList<ModelCategory>, adapterDashboardAdmin: AdapterDashboardAdmin) : super() {
@@ -16,7 +14,6 @@ class FilterDashboardAdmin :Filter {
         this.adapterDashboardAdmin = adapterDashboardAdmin
     }
 
-    //search fun
     override fun performFiltering(constraint: CharSequence?): FilterResults {
         var constraint = constraint
         val results = FilterResults()
@@ -42,7 +39,6 @@ class FilterDashboardAdmin :Filter {
 
     override fun publishResults(constraint: CharSequence?, results: FilterResults) {
         adapterDashboardAdmin.categoryArrayList = results.values as ArrayList<ModelCategory>
-
         adapterDashboardAdmin.notifyDataSetChanged()
     }
 }
