@@ -1,6 +1,6 @@
-<h1 align="center">Hi 👋, I'm Hello</h1>
-<h3 align="center">A passionate frontend developer GGG</h3>
+<h1 align="left">Introduction</h1>
+<p align="left">This is a PDF document management and reading application with separate interfaces for administrators and users. This application provides a convenient reading experience, allowing users to access, download, favorite and comment on PDF files with a clean and easy-to-use interface.</p>
 
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-</p>
+<h1 align="left">Features</h1>
+<h3 align="left">Admin</h3>
+<p align="left">Admin page with CRUD operations for managing PDF books: Add, delete, edit, and search functionalities to maintain and organize the PDF library effectively.</p>
