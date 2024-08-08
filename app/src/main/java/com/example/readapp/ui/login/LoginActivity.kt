@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -42,14 +43,18 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
-        //login success turn off progress
         loginViewModel.loginState.observe(this, Observer { success ->
             if (success) {
                 progressDialog.dismiss()
             }
         })
 
-        //check user type
+        loginViewModel.errorMessage.observe(this, Observer { message ->
+            progressDialog.dismiss()
+            Log.d("LoginActivity", "Error message: $message")
+        })
+
+
         loginViewModel.userType.observe(this, Observer { userType ->
             progressDialog.dismiss()
             if (userType == "User") {

@@ -13,11 +13,17 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _userType = MutableLiveData<String>()
     val userType: LiveData<String> get() = _userType
 
+    private val _errorMessage= MutableLiveData<Boolean>()
+    val errorMessage: LiveData<Boolean> get() = _errorMessage
+
     fun login(email: String, password: String) {
         userRepository.login(email, password)
             .addOnSuccessListener { snapshot ->
                 _userType.value = snapshot.child("userType").value as String
                 _loginState.value = true
+            }
+            .addOnFailureListener {
+                _loginState.value = false
             }
     }
 }

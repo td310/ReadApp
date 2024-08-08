@@ -163,9 +163,7 @@ class PdfDetailActivity : AppCompatActivity() {
     private fun checkPermissionsAndDownload() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
-                progressDialog.setTitle("Downloading Book")
-                progressDialog.show()
-                viewModel.downloadBook()
+                showProgressAndDownload()
             } else {
                 requestManageExternalStoragePermission()
             }
@@ -175,17 +173,23 @@ class PdfDetailActivity : AppCompatActivity() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                viewModel.downloadBook()
+                showProgressAndDownload()
             } else {
                 requestStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
     }
 
+    private fun showProgressAndDownload() {
+        progressDialog.setTitle("Downloading Book")
+        progressDialog.show()
+        viewModel.downloadBook()
+    }
+
     private fun requestManageExternalStoragePermission() {
         try {
             val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-            intent.addCategory("android.intent.category.DEFAULT")
+            intent.addCategory(Intent.CATEGORY_DEFAULT)
             intent.data = Uri.parse(String.format("package:%s", packageName))
             startActivityForResult(intent, REQUEST_MANAGE_EXTERNAL_STORAGE)
         } catch (e: Exception) {
@@ -197,15 +201,10 @@ class PdfDetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_MANAGE_EXTERNAL_STORAGE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (Environment.isExternalStorageManager()) {
-                    //show progress
-                    progressDialog.setTitle("Downloading Book")
-                    progressDialog.show()
-                    viewModel.downloadBook()
-                } else {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()) {
+                showProgressAndDownload()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -214,10 +213,7 @@ class PdfDetailActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            //show progress
-            progressDialog.setTitle("Downloading Book")
-            progressDialog.show()
-            viewModel.downloadBook()
+            showProgressAndDownload()
         } else {
             Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
         }
