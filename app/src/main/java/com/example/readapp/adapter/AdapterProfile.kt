@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowProfileFavoriteBinding
-import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_detail.PdfDetailActivity
 import com.example.readapp.ui.profile.ProfileActivity
 import com.example.readapp.utils.MainUtils
 
@@ -30,7 +30,7 @@ class AdapterProfile(
         MainUtils.loadBookDetails(model, holder)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, PdfListDetailActivity::class.java)
+            val intent = Intent(context, PdfDetailActivity::class.java)
             intent.putExtra("bookId", model.id)
             context.startActivity(intent)
         }

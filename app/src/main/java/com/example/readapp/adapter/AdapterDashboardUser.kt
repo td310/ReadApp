@@ -10,7 +10,7 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.databinding.RowPdfUserBinding
-import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_detail.PdfDetailActivity
 import com.example.readapp.ui.pdf_user.FilterPdfUser
 import com.example.readapp.utils.MainUtils
 
@@ -62,7 +62,7 @@ class AdapterDashboardUser : RecyclerView.Adapter<AdapterDashboardUser.HolderPdf
         MainUtils.loadPdfSize(url, title, holder.sizeTv)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, PdfListDetailActivity::class.java)
+            val intent = Intent(context, PdfDetailActivity::class.java)
             intent.putExtra("bookId", bookId)
             context.startActivity(intent)
         }

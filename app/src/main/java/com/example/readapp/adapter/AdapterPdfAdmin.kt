@@ -13,7 +13,7 @@ import com.example.readapp.ui.pdf_admin.FilterPdfAdmin
 import android.widget.Filter
 import android.widget.Filterable
 import com.example.readapp.ui.pdf_admin_edit.PdfEditActivity
-import com.example.readapp.ui.pdf_list_detail.PdfListDetailActivity
+import com.example.readapp.ui.pdf_detail.PdfDetailActivity
 import com.example.readapp.utils.MainUtils
 import java.util.*
 
@@ -76,7 +76,7 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
         }
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, PdfListDetailActivity::class.java)
+            val intent = Intent(context, PdfDetailActivity::class.java)
             intent.putExtra("bookId", pdfId)
             context.startActivity(intent)
         }

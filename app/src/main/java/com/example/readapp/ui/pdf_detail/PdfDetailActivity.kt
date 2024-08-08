@@ -1,4 +1,4 @@
-package com.example.readapp.ui.pdf_list_detail
+package com.example.readapp.ui.pdf_detail
 
 import android.Manifest
 import android.app.ProgressDialog
@@ -23,10 +23,10 @@ import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PdfListDetailActivity : AppCompatActivity() {
+class PdfDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPdfListDetailBinding
 
-    private val viewModel: PdfListDetailViewModel by viewModel()
+    private val viewModel: PdfDetailViewModel by viewModel()
 
     private lateinit var progressDialog: ProgressDialog
 
