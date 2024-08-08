@@ -14,9 +14,6 @@ class PdfDetailViewModel(private val repository: PdfDetailRepository) : ViewMode
     private val _bookDetails = MutableLiveData<ModelPdf>()
     val bookDetails: LiveData<ModelPdf> get() = _bookDetails
 
-    private val _pageTitle = MutableLiveData<String>()
-    val pageTitle: LiveData<String> = _pageTitle
-
     private val _downloadStatus = MutableLiveData<Boolean>()
     val downloadStatus: LiveData<Boolean> get() = _downloadStatus
 
@@ -71,10 +68,6 @@ class PdfDetailViewModel(private val repository: PdfDetailRepository) : ViewMode
         }
     }
 
-
-    fun incrementDownloadCount(bookId: String) {
-        repository.incrementDownloadCount(bookId)
-    }
 
     fun checkIsFavorite(bookId: String) {
         repository.checkIsFavorite(bookId) { isFavorite ->

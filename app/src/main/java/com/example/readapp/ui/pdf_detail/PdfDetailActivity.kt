@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat
 import com.example.readapp.R
 import com.example.readapp.adapter.AdapterComment
 import com.example.readapp.data.model.ModelComment
-import com.example.readapp.databinding.ActivityPdfListDetailBinding
+import com.example.readapp.databinding.ActivityPdfDetailBinding
 import com.example.readapp.ui.pdf_admin_pdf_view.PdfViewActivity
 import com.example.readapp.utils.MainUtils
 import com.google.firebase.auth.FirebaseAuth
@@ -24,13 +24,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PdfDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPdfListDetailBinding
+    private lateinit var binding: ActivityPdfDetailBinding
 
     private val viewModel: PdfDetailViewModel by viewModel()
 
     private lateinit var progressDialog: ProgressDialog
-
-    private var bookId = ""
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -38,20 +36,24 @@ class PdfDetailActivity : AppCompatActivity() {
         const val REQUEST_MANAGE_EXTERNAL_STORAGE = 1001
     }
 
+    private var bookId = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPdfListDetailBinding.inflate(layoutInflater)
+        binding = ActivityPdfDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         bookId = intent.getStringExtra("bookId")!!
 
-        //init fb
         firebaseAuth = FirebaseAuth.getInstance()
         if (firebaseAuth.currentUser != null) {
             viewModel.checkIsFavorite(bookId)
         }
 
-        setupProgressDialog()
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...")
+        progressDialog.setCanceledOnTouchOutside(false)
+
         setupObservers()
         setupListeners()
 
@@ -110,7 +112,7 @@ class PdfDetailActivity : AppCompatActivity() {
             progressDialog.dismiss()
             if (success) {
                 Toast.makeText(this, "Book downloaded successfully", Toast.LENGTH_SHORT).show()
-                viewModel.incrementDownloadCount(bookId)
+                MainUtils.incrementDownloadCount(bookId)
             } else {
                 Toast.makeText(this, "Failed to download book", Toast.LENGTH_SHORT).show()
             }
@@ -158,16 +160,9 @@ class PdfDetailActivity : AppCompatActivity() {
         viewModel.fetchComments(bookId)
     }
 
-    private fun setupProgressDialog() {
-        progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Please wait...")
-        progressDialog.setCanceledOnTouchOutside(false)
-    }
-
     private fun checkPermissionsAndDownload() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (Environment.isExternalStorageManager()) {
-                //show progress
                 progressDialog.setTitle("Downloading Book")
                 progressDialog.show()
                 viewModel.downloadBook()

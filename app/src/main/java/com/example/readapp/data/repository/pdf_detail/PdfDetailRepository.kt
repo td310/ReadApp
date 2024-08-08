@@ -18,23 +18,10 @@ class PdfDetailRepository(
         ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val book = snapshot.getValue(ModelPdf::class.java)
-                book?.let { callback(it) }
+                book?.let {
+                    callback(it)
+                }
             }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    fun incrementDownloadCount(bookId: String) {
-        val ref = FirebaseDatabase.getInstance().getReference("Books")
-        ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var downloadsCount =
-                    snapshot.child("downloadsCount").getValue(Long::class.java) ?: 0
-                val newDownloadsCount = downloadsCount + 1
-                ref.child(bookId).child("downloadsCount").setValue(newDownloadsCount)
-            }
-
             override fun onCancelled(error: DatabaseError) {}
         })
     }

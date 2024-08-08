@@ -45,7 +45,7 @@ object MainUtils {
         return DateFormat.format("dd/MM/yyyy", cal).toString()
     }
 
-    //delete book
+    //---PDF Admin---
     fun deleteBook(context: Context, bookId: String, bookUrl: String, bookTitle: String) {
 
         Log.d(TAG, "deleteBook: Deleting from storage...")
@@ -80,31 +80,6 @@ object MainUtils {
             }
     }
 
-    // Remove from favorite for all users
-    fun removeFromFavorite(context: Context, bookId: String, onSuccess: () -> Unit = {}) {
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (userSnapshot in snapshot.children) {
-                    userSnapshot.ref.child("Favorites").child(bookId)
-                        .removeValue()
-                        .addOnSuccessListener {
-                            Log.d(TAG, "removeFromAllFavorites: Removed from favorite of user ${userSnapshot.key}")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorite of user ${userSnapshot.key} due to ${e.message}")
-                        }
-                }
-                onSuccess()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorites due to ${error.message}")
-            }
-        })
-    }
-
-    //delete books in category
     fun deleteBooksInCategory(context: Context, categoryId: String, onSuccess: () -> Unit) {
         val ref = FirebaseDatabase.getInstance().getReference("Books")
         ref.orderByChild("categoryId").equalTo(categoryId)
@@ -124,47 +99,9 @@ object MainUtils {
                 }
             })
     }
+    //---PDF Admin---
 
-
-    //load size pdf
-    fun loadPdfSize(pdfUrl: String,pdfTitle: String, sizeTv: TextView) {
-        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
-        ref.metadata
-            .addOnSuccessListener { storageMetadata ->
-                Log.d(TAG, "loadPdfSize: Got Metadata")
-                val bytes = storageMetadata.sizeBytes.toDouble()
-                Log.d(TAG, "loadPdfSize: Size Bytes $bytes")
-
-                val kb = bytes / 1024
-                val mb = kb / 1024
-                sizeTv.text = when {
-                    mb >= 1 -> "${String.format("%.2f", mb)} MB"
-                    kb >= 1 -> "${String.format("%.2f", kb)} KB"
-                    else -> "${bytes} Bytes"
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.d(TAG, "loadPdfSize: Failed to get metadata due to ${e.message}")
-            }
-    }
-
-    //show pdf belong to categoryId
-    fun loadCategory(categoryId: String, categoryTv: TextView) {
-        val ref = FirebaseDatabase.getInstance().getReference("Categories")
-        ref.child(categoryId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val category: String = "${snapshot.child("category").value}"
-                    categoryTv.text = category
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d(TAG, "loadCategory: Failed to load category due to ${error.message}")
-                }
-            })
-    }
-
-    //increment view count
+    //---PDF Detail---
     fun incrementBookViewCount(bookId:String){
         val ref = FirebaseDatabase.getInstance().getReference("Books")
         ref.child(bookId)
@@ -189,6 +126,20 @@ object MainUtils {
             })
     }
 
+    fun incrementDownloadCount(bookId: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var downloadsCount = snapshot.child("downloadsCount").getValue(Long::class.java) ?: 0
+                val newDownloadsCount = downloadsCount + 1
+                ref.child(bookId).child("downloadsCount").setValue(newDownloadsCount)
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+    //---PDF Detail---
+
+    //---Profile---
     fun loadBookDetails(model: ModelPdf, holder: AdapterProfile.HolderPdfFavorite) {
         val bookId = model.id
 
@@ -231,7 +182,31 @@ object MainUtils {
             })
     }
 
-//AdapterComment
+    fun removeFromFavorite(context: Context, bookId: String, onSuccess: () -> Unit = {}) {
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapshot in snapshot.children) {
+                    userSnapshot.ref.child("Favorites").child(bookId)
+                        .removeValue()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "removeFromAllFavorites: Removed from favorite of user ${userSnapshot.key}")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorite of user ${userSnapshot.key} due to ${e.message}")
+                        }
+                }
+                onSuccess()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(TAG, "removeFromAllFavorites: Failed to remove from favorites due to ${error.message}")
+            }
+        })
+    }
+    //---Profile---
+
+    //---Comment---
     fun loadUserDetails(model: ModelComment, binding: RowCommentBinding) {
         val ref = FirebaseDatabase.getInstance().getReference("Users").child(model.uid)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -270,7 +245,44 @@ object MainUtils {
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .show()
     }
+    //---Comment---
 
+    //---Dashboard User, PDF Detail, PDF Admin---
+    fun loadPdfSize(pdfUrl: String,pdfTitle: String, sizeTv: TextView) {
+        val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
+        ref.metadata
+            .addOnSuccessListener { storageMetadata ->
+                Log.d(TAG, "loadPdfSize: Got Metadata")
+                val bytes = storageMetadata.sizeBytes.toDouble()
+                Log.d(TAG, "loadPdfSize: Size Bytes $bytes")
+
+                val kb = bytes / 1024
+                val mb = kb / 1024
+                sizeTv.text = when {
+                    mb >= 1 -> "${String.format("%.2f", mb)} MB"
+                    kb >= 1 -> "${String.format("%.2f", kb)} KB"
+                    else -> "${bytes} Bytes"
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.d(TAG, "loadPdfSize: Failed to get metadata due to ${e.message}")
+            }
+    }
+
+    fun loadCategory(categoryId: String, categoryTv: TextView) {
+        val ref = FirebaseDatabase.getInstance().getReference("Categories")
+        ref.child(categoryId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val category: String = "${snapshot.child("category").value}"
+                    categoryTv.text = category
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "loadCategory: Failed to load category due to ${error.message}")
+                }
+            })
+    }
 
     fun loadPdfThumbnail(pdfUrl: String, imageView: ImageView, progressBar: View, pagesTv: TextView?) {
         val cacheFile = File(imageView.context.cacheDir, "${pdfUrl.hashCode()}.pdf")
@@ -332,4 +344,6 @@ object MainUtils {
             }
         }
     }
+
+    //---Dashboard User, PDF Detail, PDF Admin---
 }
