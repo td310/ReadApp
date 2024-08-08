@@ -14,6 +14,9 @@ class PdfListDetailViewModel(private val repository: PdfListDetailRepository) : 
     private val _bookDetails = MutableLiveData<ModelPdf>()
     val bookDetails: LiveData<ModelPdf> get() = _bookDetails
 
+    private val _pageTitle = MutableLiveData<String>()
+    val pageTitle: LiveData<String> = _pageTitle
+
     private val _downloadStatus = MutableLiveData<Boolean>()
     val downloadStatus: LiveData<Boolean> get() = _downloadStatus
 
@@ -53,7 +56,7 @@ class PdfListDetailViewModel(private val repository: PdfListDetailRepository) : 
 
 
     private fun saveToDownloadsFolder(bytes: ByteArray, bookTitle: String) {
-        val sanitizedBookTitle = bookTitle.replace(Regex("[^a-zA-Z0-9_\\-]"), "_")
+        val sanitizedBookTitle = bookTitle.replace(Regex("[^a-zA-Z0-9_\\-\\p{IsAlphabetic}\\p{IsDigit}]"), "_").trim()
         val nameWithExtension = "${sanitizedBookTitle}.pdf"
 
         try {
@@ -67,6 +70,7 @@ class PdfListDetailViewModel(private val repository: PdfListDetailRepository) : 
             e.printStackTrace()
         }
     }
+
 
     fun incrementDownloadCount(bookId: String) {
         repository.incrementDownloadCount(bookId)

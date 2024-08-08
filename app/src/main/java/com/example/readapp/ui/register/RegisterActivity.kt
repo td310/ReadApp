@@ -40,6 +40,11 @@ class RegisterActivity : AppCompatActivity() {
             validateData()
         }
 
+        binding.alreadyTv.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
         registerViewModel.registrationState.observe(this) { success ->
             progressDialog.dismiss()
             if (success) {

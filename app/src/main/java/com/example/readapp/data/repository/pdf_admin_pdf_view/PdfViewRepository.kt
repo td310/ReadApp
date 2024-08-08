@@ -16,7 +16,6 @@ class PdfViewRepository (private val database: FirebaseDatabase, private val sto
                     val pdfUrl = snapshot.child("url").value as String?
                     onSuccess(pdfUrl)
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     onFailure(error)
                 }

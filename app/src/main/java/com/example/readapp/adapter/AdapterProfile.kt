@@ -61,5 +61,6 @@ class AdapterProfile(
         var categoryTv = binding.categoryTv
         var sizeTv = binding.sizeTv
         var dateTv = binding.dateTv
+
     }
 }

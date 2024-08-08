@@ -44,7 +44,6 @@ class PdfListDetailRepository(
             callback(null)
             return
         }
-
         val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl)
         storageReference.getBytes(Long.MAX_VALUE)
             .addOnSuccessListener { bytes -> callback(bytes) }
@@ -93,7 +92,8 @@ class PdfListDetailRepository(
     }
 
     fun addComment(comment: ModelComment, callback: () -> Unit) {
-        val ref = database.getReference("Books").child(comment.bookId).child("Comments").child(comment.id)
+        val ref =
+            database.getReference("Books").child(comment.bookId).child("Comments").child(comment.id)
         ref.setValue(comment).addOnSuccessListener {
             callback()
         }

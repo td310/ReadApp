@@ -57,7 +57,7 @@ class AdapterDashboardUser : RecyclerView.Adapter<AdapterDashboardUser.HolderPdf
         holder.descriptionTv.text = description
         holder.dateTv.text = date
 
-        MainUtils.loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar)
+        MainUtils.loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar,null)
         MainUtils.loadCategory(categoryId, holder.categoryTv)
         MainUtils.loadPdfSize(url, title, holder.sizeTv)
 

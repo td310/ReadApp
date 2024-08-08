@@ -2,6 +2,7 @@ package com.example.readapp.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readapp.data.model.ModelComment
@@ -35,11 +36,17 @@ class AdapterComment(
             binding.dateTv.text = MainUtils.formatTimeStamp(model.timestamp.toLong())
             binding.commentTv.text = model.comment
             MainUtils.loadUserDetails(model, binding)
-            binding.deleteBtn.setOnClickListener {
+            binding.deleteBtn.apply {
                 if (firebaseAuth.currentUser?.uid == model.uid) {
-                    MainUtils.deleteCommentDialog(context, model)
+                    visibility = View.VISIBLE
+                    setOnClickListener {
+                        MainUtils.deleteCommentDialog(context, model)
+                    }
+                } else {
+                    visibility = View.GONE
                 }
             }
+
         }
     }
 }

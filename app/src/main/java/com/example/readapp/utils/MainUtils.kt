@@ -170,12 +170,10 @@ object MainUtils {
         ref.child(bookId)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    //1.get view count
                     var viewsCount = "${snapshot.child("viewsCount").value}"
                     if(viewsCount == "" || viewsCount == "null"){
                         viewsCount = "0"
                     }
-                    //2.increment view count
                     val newViewsCount = viewsCount.toLong() + 1
 
                     val hashMap = HashMap<String, Any>()
@@ -219,11 +217,12 @@ object MainUtils {
                     model.viewsCount = viewsCount.toLong()
                     model.downloadsCount = downloadsCount.toLong()
 
+
                     holder.titleTv.text = title
                     holder.descriptionTv.text = description
                     holder.dateTv.text = date
 
-                    loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar)
+                    loadPdfThumbnail(url, holder.pdfThumbnailIv, holder.progressBar,null)
                     loadCategory(categoryId, holder.categoryTv)
                     loadPdfSize(url, title, holder.sizeTv)
                 }
@@ -273,11 +272,11 @@ object MainUtils {
     }
 
 
-    fun loadPdfThumbnail(pdfUrl: String, imageView: ImageView, progressBar: View) {
+    fun loadPdfThumbnail(pdfUrl: String, imageView: ImageView, progressBar: View, pagesTv: TextView?) {
         val cacheFile = File(imageView.context.cacheDir, "${pdfUrl.hashCode()}.pdf")
 
         if (cacheFile.exists()) {
-            loadThumbnailFromCache(cacheFile, imageView, progressBar)
+            loadThumbnailFromCache(cacheFile, imageView, progressBar, pagesTv)
             return
         }
 
@@ -291,7 +290,7 @@ object MainUtils {
                     val fos = FileOutputStream(cacheFile)
                     fos.write(bytes)
                     fos.close()
-                    loadThumbnailFromCache(cacheFile, imageView, progressBar)
+                    loadThumbnailFromCache(cacheFile, imageView, progressBar, pagesTv)
                 } catch (e: IOException) {
                     withContext(Dispatchers.Main) {
                         progressBar.visibility = View.INVISIBLE
@@ -307,10 +306,11 @@ object MainUtils {
         }
     }
 
-    private fun loadThumbnailFromCache(file: File, imageView: ImageView, progressBar: View) {
+    private fun loadThumbnailFromCache(file: File, imageView: ImageView, progressBar: View, pagesTv: TextView?) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val pdfRenderer = PdfRenderer(ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY))
+                val pageCount = pdfRenderer.pageCount
                 val page = pdfRenderer.openPage(0)
                 val bitmap = Bitmap.createBitmap(page.width, page.height, Bitmap.Config.ARGB_8888)
                 page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
@@ -320,6 +320,9 @@ object MainUtils {
                 withContext(Dispatchers.Main) {
                     imageView.setImageBitmap(bitmap)
                     progressBar.visibility = View.INVISIBLE
+                    if (pagesTv != null) {
+                        pagesTv.text = pageCount.toString()
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {

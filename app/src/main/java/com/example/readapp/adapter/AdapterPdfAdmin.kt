@@ -68,9 +68,8 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
         holder.dateTv.text = formattedDate
         //fun...
         MainUtils.loadCategory(categoryId, holder.categoryTv)
-//        MainUtils.loadPdfFromUrlSinglePage(pdfUrl, title, holder.pdfView, holder.progressBar, null)
         MainUtils.loadPdfSize(pdfUrl, title, holder.sizeTv)
-        MainUtils.loadPdfThumbnail(pdfUrl, holder.pdfThumbnailIv, holder.progressBar)
+        MainUtils.loadPdfThumbnail(pdfUrl, holder.pdfThumbnailIv, holder.progressBar,null)
 
         holder.moreBtn.setOnClickListener {
             moreOptionsDialog(model, holder)

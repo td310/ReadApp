@@ -1,7 +1,6 @@
 package com.example.readapp.ui.pdf_list_detail
 
 import android.Manifest
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -71,7 +69,7 @@ class PdfListDetailActivity : AppCompatActivity() {
             binding.dateTv.text = MainUtils.formatTimeStamp(book.timestamp)
 
             MainUtils.loadCategory(book.categoryId, binding.categoryTv)
-            MainUtils.loadPdfThumbnail(book.url, binding.pdfThumbnailIv, binding.progressBar)
+            MainUtils.loadPdfThumbnail(book.url, binding.pdfThumbnailIv, binding.progressBar,binding.pagesTv)
             MainUtils.loadPdfSize(book.url, book.title, binding.sizeTv)
             MainUtils.incrementBookViewCount(bookId)
 
