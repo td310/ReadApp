@@ -12,9 +12,10 @@ import com.google.firebase.storage.FirebaseStorage
 class PdfDetailRepository(
     private val database: FirebaseDatabase,
     private val firebaseAuth: FirebaseAuth,
+    private val storage: FirebaseStorage
 ) {
     fun getBookDetails(bookId: String, callback: (ModelPdf) -> Unit) {
-        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        val ref = database.getReference("Books")
         ref.child(bookId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val book = snapshot.getValue(ModelPdf::class.java)
@@ -31,7 +32,7 @@ class PdfDetailRepository(
             callback(null)
             return
         }
-        val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl)
+        val storageReference = storage.getReferenceFromUrl(bookUrl)
         storageReference.getBytes(Long.MAX_VALUE)
             .addOnSuccessListener { bytes -> callback(bytes) }
             .addOnFailureListener { callback(null) }
@@ -101,7 +102,6 @@ class PdfDetailRepository(
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle error
             }
         })
     }

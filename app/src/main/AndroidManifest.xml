@@ -34,7 +34,7 @@
             android:name=".ui.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.pdf_admin_pdf_view.PdfViewActivity"
+            android:name=".ui.pdf_view.PdfViewActivity"
             android:exported="false" />
         <activity
             android:name=".ui.pdf_detail.PdfDetailActivity"

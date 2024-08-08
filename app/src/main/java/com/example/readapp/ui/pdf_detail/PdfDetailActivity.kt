@@ -17,7 +17,7 @@ import com.example.readapp.R
 import com.example.readapp.adapter.AdapterComment
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.databinding.ActivityPdfDetailBinding
-import com.example.readapp.ui.pdf_admin_pdf_view.PdfViewActivity
+import com.example.readapp.ui.pdf_view.PdfViewActivity
 import com.example.readapp.utils.MainUtils
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel

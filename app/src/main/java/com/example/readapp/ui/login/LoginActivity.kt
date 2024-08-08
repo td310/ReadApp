@@ -51,9 +51,8 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.errorMessage.observe(this, Observer { message ->
             progressDialog.dismiss()
-            Log.d("LoginActivity", "Error message: $message")
+            Toast.makeText(this, "Login failed: $message", Toast.LENGTH_SHORT).show()
         })
-
 
         loginViewModel.userType.observe(this, Observer { userType ->
             progressDialog.dismiss()

@@ -7,16 +7,16 @@ import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.readapp.adapter.AdapterPdfAdmin
-import com.example.readapp.data.repository.pdf_admin.PdfAdminRepository
 import com.example.readapp.databinding.ActivityPdfAdminBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PdfAdminActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPdfAdminBinding
 
-    private lateinit var viewModel: PdfAdminViewModel
+    // Sử dụng Koin để inject ViewModel
+    private val viewModel: PdfAdminViewModel by viewModel()
 
     private lateinit var adapterPdfAdmin: AdapterPdfAdmin
 
@@ -37,10 +37,6 @@ class PdfAdminActivity : AppCompatActivity() {
         category = intent.getStringExtra("category")!!
 
         binding.subTitleTv.text = category
-
-        val repository = PdfAdminRepository()
-        val factory = PdfAdminViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory).get(PdfAdminViewModel::class.java)
 
         adapterPdfAdmin = AdapterPdfAdmin(this, ArrayList())
         binding.booksRv.adapter = adapterPdfAdmin
@@ -80,4 +76,5 @@ class PdfAdminActivity : AppCompatActivity() {
         })
     }
 }
+
 

@@ -1,4 +1,4 @@
-package com.example.readapp.ui.pdf_admin_pdf_view
+package com.example.readapp.ui.pdf_view
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PdfViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPdfViewBinding
-    private val pdfViewDetailViewModel: PdfViewDetailViewModel by viewModel()
+    private val pdfViewViewModel: PdfViewViewModel by viewModel()
     private var bookId = ""
 
     private companion object {
@@ -23,7 +23,7 @@ class PdfViewActivity : AppCompatActivity() {
 
         bookId = intent.getStringExtra("bookId")!!
         observeViewModel()
-        pdfViewDetailViewModel.loadBookDetails(bookId)
+        pdfViewViewModel.loadBookDetails(bookId)
 
         binding.backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -31,12 +31,12 @@ class PdfViewActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        pdfViewDetailViewModel.pdfBytes.observe(this, { bytes ->
+        pdfViewViewModel.pdfBytes.observe(this, { bytes ->
             binding.pdfView.fromBytes(bytes)
                 .swipeHorizontal(false)
                 .onPageChange { page, pageCount ->
                     val currentPage = page + 1
-                    pdfViewDetailViewModel.updatePageTitle(currentPage, pageCount)
+                    pdfViewViewModel.updatePageTitle(currentPage, pageCount)
                 }
                 .onError {
                     Log.d(TAG, "loadBookFromUrl: Failed to get book from url")
@@ -48,12 +48,12 @@ class PdfViewActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.GONE
         })
 
-        pdfViewDetailViewModel.errorMessage.observe(this, { message ->
+        pdfViewViewModel.errorMessage.observe(this, { message ->
             Log.d(TAG, "Error: $message")
             binding.progressBar.visibility = View.GONE
         })
 
-        pdfViewDetailViewModel.pageTitle.observe(this, { title ->
+        pdfViewViewModel.pageTitle.observe(this, { title ->
             binding.toolbarSubTitleTv.text = title
         })
     }

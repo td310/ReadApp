@@ -8,7 +8,7 @@ import com.example.readapp.data.repository.pdf.PdfRepository
 import com.example.readapp.ui.register.RegisterViewModel
 import com.example.readapp.data.repository.login_register.UserRepository
 import com.example.readapp.data.repository.pdf_detail.PdfDetailRepository
-import com.example.readapp.data.repository.pdf_admin_pdf_view.PdfViewRepository
+import com.example.readapp.data.repository.pdf_view.PdfViewRepository
 import com.example.readapp.data.repository.dashboard_user.DashboardUserRepository
 import com.example.readapp.data.repository.profile.ProfileRepository
 import com.example.readapp.data.repository.profile_edit.ProfileEditRepository
@@ -20,7 +20,7 @@ import com.example.readapp.ui.pdf.PdfAddViewModel
 import com.example.readapp.ui.pdf_admin.PdfAdminViewModel
 import com.example.readapp.ui.pdf_admin_edit.PdfEditViewModel
 import com.example.readapp.ui.pdf_detail.PdfDetailViewModel
-import com.example.readapp.ui.pdf_admin_pdf_view.PdfViewDetailViewModel
+import com.example.readapp.ui.pdf_view.PdfViewViewModel
 import com.example.readapp.ui.pdf_user.PdfUserViewModel
 import com.example.readapp.ui.profile.ProfileViewModel
 import com.example.readapp.ui.profile_edit.ProfileEditViewModel
@@ -40,7 +40,7 @@ val appModule = module {
     single { PdfRepository() }
     single { PdfAdminRepository() }
     single { PdfEditRepository(get()) }
-    single { PdfDetailRepository(get(),get()) }
+    single { PdfDetailRepository(get(),get(),get()) }
     single { PdfViewRepository(get(), get()) }
     single { DashboardUserRepository(get()) }
     single { DashboardAdminRepository(get()) }
@@ -52,7 +52,7 @@ val appModule = module {
     viewModel { DashboardUserViewModel(get()) }
     viewModel { DashboardAdminViewModel(get()) }
     viewModel { PdfUserViewModel(get()) }
-    viewModel { PdfViewDetailViewModel(get()) }
+    viewModel { PdfViewViewModel(get()) }
     viewModel { PdfDetailViewModel(get()) }
     viewModel { PdfEditViewModel(get()) }
     viewModel { PdfAdminViewModel(get()) }

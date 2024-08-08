@@ -1,11 +1,11 @@
-package com.example.readapp.ui.pdf_admin_pdf_view
+package com.example.readapp.ui.pdf_view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.readapp.data.repository.pdf_admin_pdf_view.PdfViewRepository
+import com.example.readapp.data.repository.pdf_view.PdfViewRepository
 
-class PdfViewDetailViewModel(private val repository: PdfViewRepository) : ViewModel() {
+class PdfViewViewModel(private val repository: PdfViewRepository) : ViewModel() {
     private val _pdfBytes = MutableLiveData<ByteArray>()
     val pdfBytes: LiveData<ByteArray> = _pdfBytes
 

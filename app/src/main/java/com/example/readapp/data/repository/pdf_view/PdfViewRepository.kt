@@ -1,4 +1,4 @@
-package com.example.readapp.data.repository.pdf_admin_pdf_view
+package com.example.readapp.data.repository.pdf_view
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

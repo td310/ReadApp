@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.readapp.data.model.ModelComment
 import com.example.readapp.data.model.ModelPdf
 import com.example.readapp.data.repository.pdf_detail.PdfDetailRepository
+import com.example.readapp.utils.MainUtils
 import java.io.FileOutputStream
 
 class PdfDetailViewModel(private val repository: PdfDetailRepository) : ViewModel() {
@@ -43,28 +44,11 @@ class PdfDetailViewModel(private val repository: PdfDetailRepository) : ViewMode
         }
         repository.downloadBook(url) { bytes ->
             if (bytes != null) {
-                saveToDownloadsFolder(bytes, _bookDetails.value?.title ?: "book")
+                MainUtils.saveToDownloadsFolder(bytes, _bookDetails.value?.title ?: "book")
                 _downloadStatus.postValue(true)
             } else {
                 _downloadStatus.postValue(false)
             }
-        }
-    }
-
-
-    private fun saveToDownloadsFolder(bytes: ByteArray, bookTitle: String) {
-        val sanitizedBookTitle = bookTitle.replace(Regex("[^a-zA-Z0-9_\\-\\p{IsAlphabetic}\\p{IsDigit}]"), "_").trim()
-        val nameWithExtension = "${sanitizedBookTitle}.pdf"
-
-        try {
-            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            downloadFolder.mkdirs()
-            val filePath = downloadFolder.path + "/" + nameWithExtension
-            val out = FileOutputStream(filePath)
-            out.write(bytes)
-            out.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
     }
 

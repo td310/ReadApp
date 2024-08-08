@@ -3,6 +3,7 @@ package com.example.readapp.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
+import android.os.Environment
 import android.os.ParcelFileDescriptor
 import android.text.format.DateFormat
 import android.util.Log
@@ -136,6 +137,22 @@ object MainUtils {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
+    }
+
+    fun saveToDownloadsFolder(bytes: ByteArray, bookTitle: String) {
+        val sanitizedBookTitle = bookTitle.replace(Regex("[^a-zA-Z0-9_\\-\\p{IsAlphabetic}\\p{IsDigit}]"), "_").trim()
+        val nameWithExtension = "${sanitizedBookTitle}.pdf"
+
+        try {
+            val downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            downloadFolder.mkdirs()
+            val filePath = downloadFolder.path + "/" + nameWithExtension
+            val out = FileOutputStream(filePath)
+            out.write(bytes)
+            out.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
     //---PDF Detail---
 
