@@ -15,14 +15,9 @@ class PdfAdminActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPdfAdminBinding
 
-    // Sử dụng Koin để inject ViewModel
     private val viewModel: PdfAdminViewModel by viewModel()
 
     private lateinit var adapterPdfAdmin: AdapterPdfAdmin
-
-    private companion object {
-        const val TAG = "PDF_LIST_ADMIN_TAG"
-    }
 
     private var categoryId = ""
     private var category = ""
@@ -44,7 +39,6 @@ class PdfAdminActivity : AppCompatActivity() {
         viewModel.loadPdfList(categoryId)
         observeViewModel()
 
-        //back btn
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
@@ -54,7 +48,6 @@ class PdfAdminActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        //search
         binding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -62,7 +55,6 @@ class PdfAdminActivity : AppCompatActivity() {
                 try {
                     adapterPdfAdmin.filter.filter(s)
                 } catch (e: Exception) {
-                    Log.d(TAG, "onTextChanged: ${e.message} ")
                 }
             }
 

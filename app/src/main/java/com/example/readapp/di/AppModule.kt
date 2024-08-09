@@ -38,7 +38,7 @@ val appModule = module {
     single { CategoryRepository() }
     single { UserRepository(get(), get()) }
     single { PdfRepository() }
-    single { PdfAdminRepository() }
+    single { PdfAdminRepository(get()) }
     single { PdfEditRepository(get()) }
     single { PdfDetailRepository(get(),get(),get()) }
     single { PdfViewRepository(get(), get()) }

@@ -60,13 +60,13 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
         val description = model.description
         val pdfUrl = model.url
         val timestamp = model.timestamp
-        //fun format time
+
         val formattedDate = MainUtils.formatTimeStamp(timestamp)
 
         holder.titleTv.text = title
         holder.descriptionTv.text = description
         holder.dateTv.text = formattedDate
-        //fun...
+
         MainUtils.loadCategory(categoryId, holder.categoryTv)
         MainUtils.loadPdfSize(pdfUrl, title, holder.sizeTv)
         MainUtils.loadPdfThumbnail(pdfUrl, holder.pdfThumbnailIv, holder.progressBar,null)

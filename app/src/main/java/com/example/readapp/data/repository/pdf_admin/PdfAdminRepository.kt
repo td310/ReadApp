@@ -6,12 +6,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class PdfAdminRepository() {
-    private val database = FirebaseDatabase.getInstance().getReference("Books")
+class PdfAdminRepository(private val database: FirebaseDatabase) {
+
 
     fun getPdfsByCategory(categoryId: String, callback: (ArrayList<ModelPdf>) -> Unit) {
         val pdfArrayList = ArrayList<ModelPdf>()
-        database.orderByChild("categoryId").equalTo(categoryId)
+        database.getReference("Books").orderByChild("categoryId").equalTo(categoryId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     pdfArrayList.clear()

@@ -49,7 +49,6 @@ class PdfViewActivity : AppCompatActivity() {
         })
 
         pdfViewViewModel.errorMessage.observe(this, { message ->
-            Log.d(TAG, "Error: $message")
             binding.progressBar.visibility = View.GONE
         })
 

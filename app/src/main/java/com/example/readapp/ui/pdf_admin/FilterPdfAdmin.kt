@@ -19,11 +19,9 @@ class FilterPdfAdmin : Filter {
 
         val results = FilterResults()
         if(constraint != null && constraint.isNotEmpty()){
-            //change uppercase or lower
             constraint = constraint.toString().lowercase()
             var filteredModels = ArrayList<ModelPdf>()
             for (i in filterList.indices){
-                //validate if match
                 if(filterList[i].title.lowercase().contains(constraint)){
                     filteredModels.add(filterList[i])
                 }
@@ -32,7 +30,6 @@ class FilterPdfAdmin : Filter {
             results.values = filteredModels
         }
         else{
-            //search value null or empty
             results.count = filterList.size
             results.values = filterList
         }
