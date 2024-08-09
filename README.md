@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/9a1ba272-f9c9-4c6a-b83e-d7224e3f05d1
 
 
 <h3 align="left">User</h3>
-<p align="left">The user page allows users to read, download, and favorite PDF files. Users can also leave comments on PDF files. Additionally, the user page provides features to edit personal information such as name, image, and password, as well as reset passwords using Firebase Authentication.</p>
+<p align="left">The user page allows users to read, download, and favorite PDF files. Users can also leave comments on PDF files. Additionally, the user page provides features to edit personal information such as name, image, and password.</p>
 
 
 https://github.com/user-attachments/assets/ec58072a-6e12-47f2-8acf-6bee6b9bfb31
