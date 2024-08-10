@@ -114,7 +114,7 @@ object MainUtils {
                     }
                     val newViewsCount = viewsCount.toLong() + 1
 
-                    val hashMap = HashMap<String, Any>()
+                    val hashMap: HashMap<String, Any> = HashMap()
                     hashMap["viewsCount"] = newViewsCount
 
                     val dbRef = FirebaseDatabase.getInstance().getReference("Books")

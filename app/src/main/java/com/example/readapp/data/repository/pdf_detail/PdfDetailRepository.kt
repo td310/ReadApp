@@ -52,7 +52,7 @@ class PdfDetailRepository(
 
     fun addToFavorite(bookId: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val timestamp = System.currentTimeMillis()
-        val hashMap = HashMap<String, Any>()
+        val hashMap: HashMap<String, Any> = HashMap()
         hashMap["bookId"] = bookId
         hashMap["timestamp"] = timestamp
 

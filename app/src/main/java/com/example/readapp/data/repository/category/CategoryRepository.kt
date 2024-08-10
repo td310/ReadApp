@@ -6,7 +6,7 @@ import com.google.firebase.database.FirebaseDatabase
 class CategoryRepository {
 
     fun addCategory(uid: String, category: String, timestamp: Long): Task<Void> {
-        val hashMap = HashMap<String, Any>()
+        val hashMap: HashMap<String, Any> = HashMap()
         hashMap["id"] = "$timestamp"
         hashMap["category"] = category
         hashMap["timestamp"] = timestamp
