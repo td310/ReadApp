@@ -1,16 +1,16 @@
 package com.example.readapp.ui.pdf_user
 
 import android.widget.Filter
-import com.example.readapp.adapter.AdapterFragmentUser
+import com.example.readapp.adapter.AdapterPdfUser
 import com.example.readapp.data.model.ModelPdf
 
 class FilterPdfUser : Filter {
     var filterList: ArrayList<ModelPdf>
-    var adapterFragmentUser: AdapterFragmentUser
+    var adapterPdfUser: AdapterPdfUser
 
-    constructor(filterList: ArrayList<ModelPdf>, adapterFragmentUser: AdapterFragmentUser):super(){
+    constructor(filterList: ArrayList<ModelPdf>, adapterPdfUser: AdapterPdfUser):super(){
         this.filterList = filterList
-        this.adapterFragmentUser = adapterFragmentUser
+        this.adapterPdfUser = adapterPdfUser
     }
 
     override fun performFiltering(constraint: CharSequence): FilterResults {
@@ -36,7 +36,7 @@ class FilterPdfUser : Filter {
     }
 
     override fun publishResults(constraint: CharSequence, results: FilterResults) {
-        adapterFragmentUser.pdfArrayList = results.values as ArrayList<ModelPdf>
-        adapterFragmentUser.notifyDataSetChanged()
+        adapterPdfUser.pdfArrayList = results.values as ArrayList<ModelPdf>
+        adapterPdfUser.notifyDataSetChanged()
     }
 }

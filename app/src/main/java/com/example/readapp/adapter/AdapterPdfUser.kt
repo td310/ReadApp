@@ -14,7 +14,7 @@ import com.example.readapp.ui.pdf_detail.PdfDetailActivity
 import com.example.readapp.ui.pdf_user.FilterPdfUser
 import com.example.readapp.utils.MainUtils
 
-class AdapterFragmentUser : RecyclerView.Adapter<AdapterFragmentUser.HolderPdfUSer>, Filterable {
+class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUSer>, Filterable {
 
     private var context: Context
 
