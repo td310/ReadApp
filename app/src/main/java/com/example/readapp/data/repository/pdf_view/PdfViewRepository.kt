@@ -8,7 +8,7 @@ import com.google.firebase.storage.FirebaseStorage
 
 class PdfViewRepository (private val database: FirebaseDatabase, private val storage: FirebaseStorage) {
 
-    fun getBookDetails(bookId: String, onSuccess: (String?) -> Unit, onFailure: (DatabaseError) -> Unit) {
+    fun getPdfDetails(bookId: String, onSuccess: (String?) -> Unit, onFailure: (DatabaseError) -> Unit) {
         val ref = database.getReference("Books")
         ref.child(bookId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
