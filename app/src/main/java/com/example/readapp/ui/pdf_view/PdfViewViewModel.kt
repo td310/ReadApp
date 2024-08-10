@@ -15,7 +15,7 @@ class PdfViewViewModel(private val repository: PdfViewRepository) : ViewModel() 
     private val _pageTitle = MutableLiveData<String>()
     val pageTitle: LiveData<String> = _pageTitle
 
-    fun loadBookDetails(bookId: String) {
+    fun loadPdfDetails(bookId: String) {
         repository.getPdfDetails(bookId, { pdfUrl ->
             if (pdfUrl != null) {
                 loadBookFromUrl(pdfUrl)

@@ -23,7 +23,7 @@ class PdfViewActivity : AppCompatActivity() {
 
         bookId = intent.getStringExtra("bookId")!!
         observeViewModel()
-        pdfViewViewModel.loadBookDetails(bookId)
+        pdfViewViewModel.loadPdfDetails(bookId)
 
         binding.backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
