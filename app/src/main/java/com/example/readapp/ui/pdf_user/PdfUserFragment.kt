@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.readapp.adapter.AdapterDashboardUser
+import com.example.readapp.adapter.AdapterFragmentUser
 import com.example.readapp.databinding.FragmentBookUserBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,14 +52,14 @@ class PdfUserFragment : Fragment() {
         }
 
         viewModel.books.observe(viewLifecycleOwner) { books ->
-            val adapter = AdapterDashboardUser(requireContext(), ArrayList(books))
+            val adapter = AdapterFragmentUser(requireContext(), ArrayList(books))
             binding.booksRv.adapter = adapter
         }
 
         binding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                (binding.booksRv.adapter as? AdapterDashboardUser)?.filter?.filter(s)
+                (binding.booksRv.adapter as? AdapterFragmentUser)?.filter?.filter(s)
             }
             override fun afterTextChanged(s: Editable?) {}
         })
