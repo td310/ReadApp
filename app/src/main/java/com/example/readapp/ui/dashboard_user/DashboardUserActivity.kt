@@ -6,12 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.readapp.data.model.ModelCategory
 import com.example.readapp.databinding.ActivityDashboardUserBinding
 import com.example.readapp.ui.login.LoginActivity
@@ -25,6 +20,7 @@ class DashboardUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardUserBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
+
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     private val viewModel: DashboardUserViewModel by viewModel()
@@ -69,18 +65,6 @@ class DashboardUserActivity : AppCompatActivity() {
         }.attach()
     }
 
-    private fun checkUser() {
-        val firebaseUser = firebaseAuth.currentUser
-        if (firebaseUser == null) {
-            binding.subTitleTv.text = "Not Logged In"
-            binding.profileBtn.visibility = View.GONE
-        } else {
-            val email = firebaseUser.email
-            binding.subTitleTv.text = email
-            binding.profileBtn.visibility = View.VISIBLE
-        }
-    }
-
     class ViewPagerAdapter(
         fragmentActivity: FragmentActivity
     ) : FragmentStateAdapter(fragmentActivity) {
@@ -99,6 +83,19 @@ class DashboardUserActivity : AppCompatActivity() {
 
         fun getTitle(position: Int): String = fragmentTitleList[position]
     }
+
+    private fun checkUser() {
+        val firebaseUser = firebaseAuth.currentUser
+        if (firebaseUser == null) {
+            binding.subTitleTv.text = "Not Logged In"
+            binding.profileBtn.visibility = View.GONE
+        } else {
+            val email = firebaseUser.email
+            binding.subTitleTv.text = email
+            binding.profileBtn.visibility = View.VISIBLE
+        }
+    }
+
 
 }
 
