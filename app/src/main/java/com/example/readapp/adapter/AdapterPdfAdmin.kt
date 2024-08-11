@@ -29,7 +29,7 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Fil
 
     private lateinit var binding: RowPdfAdminBinding
 
-    constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>):super() {
+    constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>) {
         this.context = context
         this.pdfArrayList = pdfArrayList
         this.filterList = pdfArrayList

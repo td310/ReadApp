@@ -12,12 +12,17 @@ import com.example.readapp.ui.pdf_detail.PdfDetailActivity
 import com.example.readapp.ui.profile.ProfileActivity
 import com.example.readapp.utils.MainUtils
 
-class AdapterProfile(
-    private val context: Context,
+class AdapterProfile : RecyclerView.Adapter<AdapterProfile.HolderPdfFavorite> {
+    private var context: Context
+
     private var booksArrayList: ArrayList<ModelPdf>
-) : RecyclerView.Adapter<AdapterProfile.HolderPdfFavorite>() {
 
     private lateinit var binding: RowProfileFavoriteBinding
+
+    constructor(context: Context, bookArraylist: ArrayList<ModelPdf>) {
+        this.context=context
+        this.booksArrayList=bookArraylist
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPdfFavorite {
         binding = RowProfileFavoriteBinding.inflate(LayoutInflater.from(context), parent, false)
