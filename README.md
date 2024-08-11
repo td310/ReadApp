@@ -1,5 +1,5 @@
 <h1 align="left">Introduction</h1>
-<p align="left">This is a PDF document management and reading application with separate interfaces for administrators and users. This application provides a convenient reading experience, allowing users to access, download, favorite and comment on PDF files with a clean and easy-to-use interface.</p>
+<p align="left">This is a PDF file book management and reading application with separate interface for administrator and user. This application allows users to access, download, favorite and comment and the administrator will manage PDF files.</p>
 
 <h1 align="left">Tech</h1>
 <p align="left">• Language: Kotlin </p>
