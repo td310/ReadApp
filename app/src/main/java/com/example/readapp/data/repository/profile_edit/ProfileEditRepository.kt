@@ -21,7 +21,7 @@ class ProfileEditRepository(
         ref.child(firebaseAuth.uid!!)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val user = snapshot.getValue(ModelUser::class.java)
+                    val user = ModelUser()
                     onResult(user)
                 }
 

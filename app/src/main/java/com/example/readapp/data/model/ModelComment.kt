@@ -7,8 +7,6 @@ class ModelComment {
     var uid = ""
     var comment = ""
 
-    //empty constructor required by firebase
-    constructor()
 
     //param constructor
     constructor(id: String, bookId: String, timestamp: String, uid: String, comment: String) {
